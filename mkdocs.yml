@@ -1,0 +1,64 @@
+site_name: Advanced Physical Computing 2026–27
+site_description: Semester 1 — Arduino, Raspberry Pi 5 & Whisplay HAT
+site_url: https://REPLACE-USERNAME.github.io/apc-2026-27/
+repo_url: https://github.com/REPLACE-USERNAME/apc-2026-27
+repo_name: apc-2026-27
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: blue
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - scheme: slate
+      primary: blue
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - navigation.footer
+    - navigation.top
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - attr_list
+  - md_in_html
+  - tables
+
+nav:
+  - Home: index.md
+  - 1. Foundations: lessons/lesson-01-foundations.md
+  - Arduino:
+      - 2. Board & digital I/O: lessons/lesson-02-arduino-digital.md
+      - 3. Analog, PWM & serial: lessons/lesson-03-arduino-analog.md
+      - 4. Sensors & actuators: lessons/lesson-04-arduino-sensors.md
+      - 5. Mini-project: lessons/lesson-05-arduino-project.md
+  - Raspberry Pi:
+      - 6. Linux & remote access: lessons/lesson-06-pi-intro.md
+      - 7. Python, Thonny & GPIO: lessons/lesson-07-pi-gpio.md
+      - 8. ADC, I2C & SPI: lessons/lesson-08-pi-buses.md
+      - 9. Mini-project: lessons/lesson-09-pi-project.md
+  - Whisplay:
+      - 10. Meet the HAT & LCD: lessons/lesson-10-whisplay-intro.md
+      - 11. Buttons, LED & audio: lessons/lesson-11-whisplay-io.md
+      - 12. Mini-project (game): lessons/lesson-12-whisplay-game.md
+  - Capstone:
+      - 13. Proposal & build: lessons/lesson-13-capstone-build.md
+      - 14. Demo & reflection: lessons/lesson-14-capstone-demo.md
+  - Appendix:
+      - Raspberry Pi: appendix/raspberry-pi.md
+      - Arduino: appendix/arduino.md
+      - Whisplay: appendix/whisplay.md
