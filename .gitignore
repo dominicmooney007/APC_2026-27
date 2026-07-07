@@ -2,3 +2,6 @@ site/
 .DS_Store
 __pycache__/
 *.pyc
+
+# stray build temp files (schoology-offline/ HTML + zip are committed intentionally)
+schoology-offline/ziFcETBL

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7. Python, Thonny &amp; GPIO — Advanced Physical Computing</title>
+<style>
+:root{
+  --sas-navy:#1B2A5E; --sas-crimson:#C8102E; --sas-gold:#F0B432;
+  --sas-charcoal:#2C2C2C; --sas-gray:#F4F4F4; --sas-teal:#005F73; --sas-white:#fff;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-charcoal);
+  background:var(--sas-gray);line-height:1.7;font-size:17px;}
+.wrap{max-width:860px;margin:0 auto;background:var(--sas-white);
+  min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,.06);}
+/* Banner */
+.banner{background:var(--sas-navy);border-bottom:3px solid var(--sas-gold);
+  padding:18px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.sas-logo-box{display:inline-flex;flex-direction:column;border:2px solid #fff;
+  padding:6px 12px;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.22em;text-transform:uppercase;line-height:1.25;color:#fff;position:relative;}
+.sas-logo-sub{position:absolute;bottom:-2px;right:-2px;border:2px solid #fff;
+  padding:1px 6px;font-size:8px;letter-spacing:.18em;background:var(--sas-navy);line-height:1.5;}
+.banner .course{color:#fff;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;
+  letter-spacing:.12em;font-size:15px;text-align:right;opacity:.92;}
+.banner .course b{color:var(--sas-gold);font-weight:700;}
+/* Content */
+.content{padding:34px 40px 60px;}
+.content h1{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:34px;letter-spacing:.02em;line-height:1.12;
+  border-top:3px solid var(--sas-gold);padding-top:18px;margin:.2em 0 .6em;}
+.content h2{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:24px;letter-spacing:.03em;margin:1.7em 0 .5em;
+  padding-bottom:6px;border-bottom:2px solid #e3e6ef;}
+.content h3{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-teal);font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;font-size:15px;margin:1.5em 0 .4em;}
+.content h4{color:var(--sas-navy);font-size:16px;margin:1.3em 0 .3em;}
+.content a{color:var(--sas-crimson);text-decoration:none;border-bottom:1px solid rgba(200,16,46,.35);}
+.content a:hover{border-bottom-color:var(--sas-crimson);}
+blockquote{margin:1.2em 0;padding:.6em 1.1em;background:var(--sas-gray);
+  border-left:4px solid var(--sas-gold);color:#444;font-style:italic;}
+blockquote p{margin:.3em 0;}
+hr{border:0;border-top:2px solid #e3e6ef;margin:2em 0;}
+/* Tables */
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:15.5px;}
+th{background:var(--sas-navy);color:var(--sas-gold);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;text-align:left;
+  padding:9px 12px;}
+td{padding:8px 12px;border-bottom:1px solid #e7e9f0;vertical-align:top;}
+tr:nth-child(even) td{background:var(--sas-gray);}
+/* Inline + block code */
+code{font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:.9em;background:#eef0f6;color:#22245e;
+  padding:.12em .4em;border-radius:0;}
+pre{position:relative;margin:1.3em 0;}
+.codehilite,pre>code{display:block;background:#1a1a2e;color:#f2f2f2;
+  border-top:3px solid var(--sas-gold);padding:16px 18px;overflow:auto;
+  font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:14px;line-height:1.55;}
+.codehilite code{background:none;color:inherit;padding:0;}
+.codehilite pre{margin:0;}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);
+  color:#fff;border:1px solid rgba(255,255,255,.25);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;
+  cursor:pointer;z-index:2;}
+.copy-btn:hover{background:var(--sas-crimson);border-color:var(--sas-crimson);}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #f8f8f2 }
+.codehilite .c { color: #75715e } /* Comment */
+.codehilite .err { color: #960050; background-color: #1e0010 } /* Error */
+.codehilite .esc { color: #f8f8f2 } /* Escape */
+.codehilite .g { color: #f8f8f2 } /* Generic */
+.codehilite .k { color: #66d9ef } /* Keyword */
+.codehilite .l { color: #ae81ff } /* Literal */
+.codehilite .n { color: #f8f8f2 } /* Name */
+.codehilite .o { color: #f92672 } /* Operator */
+.codehilite .x { color: #f8f8f2 } /* Other */
+.codehilite .p { color: #f8f8f2 } /* Punctuation */
+.codehilite .ch { color: #75715e } /* Comment.Hashbang */
+.codehilite .cm { color: #75715e } /* Comment.Multiline */
+.codehilite .cp { color: #75715e } /* Comment.Preproc */
+.codehilite .cpf { color: #75715e } /* Comment.PreprocFile */
+.codehilite .c1 { color: #75715e } /* Comment.Single */
+.codehilite .cs { color: #75715e } /* Comment.Special */
+.codehilite .gd { color: #f92672 } /* Generic.Deleted */
+.codehilite .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.codehilite .gr { color: #f8f8f2 } /* Generic.Error */
+.codehilite .gh { color: #f8f8f2 } /* Generic.Heading */
+.codehilite .gi { color: #a6e22e } /* Generic.Inserted */
+.codehilite .go { color: #66d9ef } /* Generic.Output */
+.codehilite .gp { color: #f92672; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #75715e } /* Generic.Subheading */
+.codehilite .gt { color: #f8f8f2 } /* Generic.Traceback */
+.codehilite .kc { color: #66d9ef } /* Keyword.Constant */
+.codehilite .kd { color: #66d9ef } /* Keyword.Declaration */
+.codehilite .kn { color: #f92672 } /* Keyword.Namespace */
+.codehilite .kp { color: #66d9ef } /* Keyword.Pseudo */
+.codehilite .kr { color: #66d9ef } /* Keyword.Reserved */
+.codehilite .kt { color: #66d9ef } /* Keyword.Type */
+.codehilite .ld { color: #e6db74 } /* Literal.Date */
+.codehilite .m { color: #ae81ff } /* Literal.Number */
+.codehilite .s { color: #e6db74 } /* Literal.String */
+.codehilite .na { color: #a6e22e } /* Name.Attribute */
+.codehilite .nb { color: #f8f8f2 } /* Name.Builtin */
+.codehilite .nc { color: #a6e22e } /* Name.Class */
+.codehilite .no { color: #66d9ef } /* Name.Constant */
+.codehilite .nd { color: #a6e22e } /* Name.Decorator */
+.codehilite .ni { color: #f8f8f2 } /* Name.Entity */
+.codehilite .ne { color: #a6e22e } /* Name.Exception */
+.codehilite .nf { color: #a6e22e } /* Name.Function */
+.codehilite .nl { color: #f8f8f2 } /* Name.Label */
+.codehilite .nn { color: #f8f8f2 } /* Name.Namespace */
+.codehilite .nx { color: #a6e22e } /* Name.Other */
+.codehilite .py { color: #f8f8f2 } /* Name.Property */
+.codehilite .nt { color: #f92672 } /* Name.Tag */
+.codehilite .nv { color: #f8f8f2 } /* Name.Variable */
+.codehilite .ow { color: #f92672 } /* Operator.Word */
+.codehilite .w { color: #f8f8f2 } /* Text.Whitespace */
+.codehilite .mb { color: #ae81ff } /* Literal.Number.Bin */
+.codehilite .mf { color: #ae81ff } /* Literal.Number.Float */
+.codehilite .mh { color: #ae81ff } /* Literal.Number.Hex */
+.codehilite .mi { color: #ae81ff } /* Literal.Number.Integer */
+.codehilite .mo { color: #ae81ff } /* Literal.Number.Oct */
+.codehilite .sa { color: #e6db74 } /* Literal.String.Affix */
+.codehilite .sb { color: #e6db74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #e6db74 } /* Literal.String.Char */
+.codehilite .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #e6db74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #e6db74 } /* Literal.String.Double */
+.codehilite .se { color: #ae81ff } /* Literal.String.Escape */
+.codehilite .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #e6db74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #e6db74 } /* Literal.String.Other */
+.codehilite .sr { color: #e6db74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #e6db74 } /* Literal.String.Single */
+.codehilite .ss { color: #e6db74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #a6e22e } /* Name.Function.Magic */
+.codehilite .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.codehilite .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.codehilite .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.codehilite .il { color: #ae81ff } /* Literal.Number.Integer.Long */
+/* Admonitions */
+.admonition{margin:1.4em 0;border:1px solid #e0e3ec;border-left-width:5px;
+  background:#fafbfe;padding:0 16px 12px;}
+.admonition-title{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;font-size:13px;margin:0 -16px 8px;padding:9px 16px;
+  background:#eef1f8;color:var(--sas-navy);}
+.admonition.note{border-left-color:var(--sas-teal);}
+.admonition.note .admonition-title{background:#e4f0f2;color:var(--sas-teal);}
+.admonition.tip,.admonition.hint{border-left-color:#1f9d55;}
+.admonition.tip .admonition-title,.admonition.hint .admonition-title{background:#e4f4ea;color:#1f7a45;}
+.admonition.warning,.admonition.caution{border-left-color:var(--sas-gold);}
+.admonition.warning .admonition-title,.admonition.caution .admonition-title{background:#fdf3dc;color:#8a6400;}
+.admonition.danger,.admonition.error{border-left-color:var(--sas-crimson);}
+.admonition.danger .admonition-title,.admonition.error .admonition-title{background:#fbe4e7;color:var(--sas-crimson);}
+.admonition>p:last-child{margin-bottom:0;}
+details.admonition{padding-bottom:0;}
+details.admonition>.admonition-title{cursor:pointer;margin-bottom:0;}
+details[open].admonition>.admonition-title{margin-bottom:8px;}
+img{max-width:100%;height:auto;}
+/* Offline notice + nav */
+.offline-note{background:#fdf3dc;border:1px solid var(--sas-gold);border-left:5px solid var(--sas-gold);
+  padding:10px 16px;font-size:14px;margin:0 0 12px;color:#6b5108;}
+.dl-bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px;}
+.dl-btn{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;padding:9px 16px;border:1px solid var(--sas-navy);background:#fff;
+  color:var(--sas-navy);cursor:pointer;text-decoration:none;display:inline-block;line-height:1;}
+.dl-btn:hover{background:var(--sas-navy);color:#fff;border-bottom-color:var(--sas-navy);}
+.dl-btn.primary{background:var(--sas-crimson);border-color:var(--sas-crimson);color:#fff;}
+.dl-btn.primary:hover{background:#a30d26;border-color:#a30d26;}
+.pagenav{display:flex;justify-content:space-between;gap:12px;margin:36px 0 0;
+  border-top:2px solid #e3e6ef;padding-top:18px;flex-wrap:wrap;}
+.pagenav a{flex:1;min-width:160px;border:1px solid #d7dae6;padding:10px 14px;
+  text-decoration:none;border-bottom:1px solid #d7dae6;color:var(--sas-navy);
+  font-size:14px;background:#fff;}
+.pagenav a:hover{border-color:var(--sas-navy);}
+.pagenav .lbl{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;
+  color:#999;margin-bottom:2px;}
+.pagenav .next{text-align:right;}
+footer.sas{background:var(--sas-navy);color:#c7cde4;padding:16px 40px;
+  font-size:12px;letter-spacing:.04em;text-align:center;border-top:3px solid var(--sas-gold);}
+footer.sas b{color:var(--sas-gold);}
+@media(max-width:640px){.banner,.content,footer.sas{padding-left:20px;padding-right:20px;}}
+@media print{body{background:#fff;}.wrap{box-shadow:none;max-width:100%;}.copy-btn{display:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="banner">
+    <span class="sas-logo-box">SHANGHAI<br>AMERICAN<br>SCHOOL<span class="sas-logo-sub">PX</span></span>
+    <span class="course">Advanced Physical<br><b>Computing</b> · 2026&ndash;27</span>
+  </header>
+  <main class="content">
+    <div class="offline-note">Offline copy for download. The live version with search lives on the course GitHub site.</div>
+    <div class="dl-bar">
+      <button class="dl-btn primary" onclick="downloadThisLesson()">&#8681; Download this lesson</button>
+      <a class="dl-btn" href="APC-Semester1-Offline.zip" download>&#8681; Download whole course (.zip)</a>
+    </div>
+    <h1 id="lesson-07-raspberry-pi-python-thonny-gpio">Lesson 07 — Raspberry Pi: Python, Thonny &amp; GPIO</h1>
+<blockquote>
+<p>Write Python on the Pi itself and control real hardware through the GPIO pins — blink an LED, then make a button drive it with event callbacks.</p>
+</blockquote>
+<p><strong>Platform:</strong> Raspberry Pi 5
+<strong>Estimated time:</strong> ~120 min hands-on
+<strong>Prerequisites:</strong> <a href="lesson-06-pi-intro.html">Lesson 6</a> — booting, terminal, proper shutdown; <a href="lesson-01-foundations.html">Lesson 1</a> — LED + resistor wiring</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<ul>
+<li>Run Python in <strong>Thonny</strong> on the Pi (no compile, no upload — just Run).</li>
+<li>Locate pins on the Pi's <strong>40-pin GPIO header</strong> and explain BCM numbering ("GPIO17" ≠ "physical pin 17").</li>
+<li>Blink an LED with <code>gpiozero</code>'s <code>LED</code> class.</li>
+<li>Read a button with the <code>Button</code> class two ways: polling in a loop, and <strong>event callbacks</strong> (<code>when_pressed</code>) — using a pull-<strong>down</strong> this time, the mirror image of the Arduino's pull-up.</li>
+<li>Contrast the Pi workflow with the Arduino workflow you already know.</li>
+</ul>
+<h2 id="todays-plan-120-min">Today's plan (~120 min)</h2>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Part</th>
+<th>What you're doing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~20 min</td>
+<td>A</td>
+<td>Thonny tour + first Python on the Pi</td>
+</tr>
+<tr>
+<td>~25 min</td>
+<td>B</td>
+<td>GPIO header + wire and blink an LED</td>
+</tr>
+<tr>
+<td>~30 min</td>
+<td>C</td>
+<td>Button input: polling, then callbacks</td>
+</tr>
+<tr>
+<td>~35 min</td>
+<td>D</td>
+<td><strong>Core build:</strong> button-toggled LED, the Python way</td>
+</tr>
+<tr>
+<td>~10 min</td>
+<td>—</td>
+<td>Check-out + shutdown</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-youll-need">What you'll need</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pi 5 + screen/keyboard/mouse</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>Breadboard + jumper wires</td>
+<td>1</td>
+<td><strong>Female-to-male</strong> jumpers for the Pi header</td>
+</tr>
+<tr>
+<td>LED + 330 Ω resistor</td>
+<td>1</td>
+<td>330 Ω on the Pi (3.3 V pins)</td>
+</tr>
+<tr>
+<td>Push button</td>
+<td>1</td>
+<td>Same tactile switch as Lesson 2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Software:</strong> Thonny (pre-installed on the Pi) + the <code>gpiozero</code> library (pre-installed on Raspberry Pi OS).</p>
+<div class="admonition warning">
+<p class="admonition-title">The Pi's pins are 3.3 V — and fragile</p>
+<p>Arduino pins forgive a lot; <strong>Pi pins don't</strong>. Never connect 5 V to a GPIO pin, and always wire with the power off. A blown GPIO pin is forever.</p>
+</div>
+<hr />
+<h2 id="part-a-thonny-python-on-the-pi-20-min">Part A — Thonny &amp; Python on the Pi (~20 min)</h2>
+<p>Open <strong>menu → Programming → Thonny</strong>. Type in the editor:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello from the Pi!&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Click <strong>Run</strong> (or F5), save as <code>~/apc/lesson-07/hello.py</code> when asked. Output appears in the Shell pane below.</p>
+<p>Feel the difference from Arduino: no board selection, no port, no compile-and-upload. The code runs <strong>on the same machine you're typing on</strong>. Stop a runaway program with the red <strong>Stop</strong> button.</p>
+<hr />
+<h2 id="part-b-the-gpio-header-blink-25-min">Part B — The GPIO header + blink (~25 min)</h2>
+<p>The Pi's 40-pin header carries GPIO pins, 3.3 V, 5 V, and grounds. We name pins by their <strong>GPIO (BCM) number</strong> — the same names <code>gpiozero</code> uses. Keep a <a href="https://pinout.xyz">pinout diagram</a> open; <strong>GPIO17 is physical pin 11</strong>, and physical pins 6, 9, 14, 20, 25, 30, 34, 39 are all ground.</p>
+<h3 id="wiring">Wiring</h3>
+<p><strong>Shut down and unplug power first.</strong></p>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GPIO17</strong> (physical pin 11)</td>
+<td>330 Ω resistor → LED <strong>anode</strong> (long leg)</td>
+</tr>
+<tr>
+<td>LED <strong>cathode</strong></td>
+<td>Any <strong>GND</strong> pin (e.g. physical pin 9)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-code">The code</h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">gpiozero</span> <span class="kn">import</span> <span class="n">LED</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+
+<span class="n">led</span> <span class="o">=</span> <span class="n">LED</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span>          <span class="c1"># GPIO17 — the BCM number, not the physical pin</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">led</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">led</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Run it. Compare line-for-line with Arduino Blink: <code>pinMode</code> → <code>LED(17)</code>, <code>digitalWrite</code> → <code>.on()</code>/<code>.off()</code>, <code>delay(500)</code> → <code>sleep(0.5)</code>, <code>loop()</code> → <code>while True:</code>.</p>
+<h3 id="checkpoint-b">✅ Checkpoint B</h3>
+<p>Change it to blink SOS (3 short, 3 long, 3 short — then repeat). Hint: write a <code>def blink(duration):</code> function so you don't repeat yourself. That's a thing C++ made harder.</p>
+<hr />
+<h2 id="part-c-button-input-two-ways-30-min">Part C — Button input, two ways (~30 min)</h2>
+<h3 id="wiring_1">Wiring</h3>
+<p><strong>Power off.</strong> Button between <strong>3.3 V</strong> (physical pin 1) and <strong>GPIO2</strong> (physical pin 3). This is the opposite arrangement from the Arduino: there, the pin idled HIGH (pull-up) and pressing pulled it LOW; here we tell <code>gpiozero</code> to hold the pin LOW (pull-<strong>down</strong>) and pressing pulls it HIGH. Either works — the code just has to know which.</p>
+<h3 id="way-1-polling-the-arduino-way">Way 1 — polling (the Arduino way)</h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">gpiozero</span> <span class="kn">import</span> <span class="n">LED</span><span class="p">,</span> <span class="n">Button</span>
+
+<span class="n">led</span> <span class="o">=</span> <span class="n">LED</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pull_up</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>   <span class="c1"># pull-down: pressed = HIGH.</span>
+                                    <span class="c1"># And is_pressed just means pressed — no LOW/HIGH gymnastics!</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">button</span><span class="o">.</span><span class="n">is_pressed</span><span class="p">:</span>
+        <span class="n">led</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">led</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="way-2-event-callbacks-the-python-way">Way 2 — event callbacks (the Python way)</h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">gpiozero</span> <span class="kn">import</span> <span class="n">LED</span><span class="p">,</span> <span class="n">Button</span>
+<span class="kn">from</span> <span class="nn">signal</span> <span class="kn">import</span> <span class="n">pause</span>
+
+<span class="n">led</span> <span class="o">=</span> <span class="n">LED</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pull_up</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">button</span><span class="o">.</span><span class="n">when_pressed</span> <span class="o">=</span> <span class="n">led</span><span class="o">.</span><span class="n">on</span>      <span class="c1"># run this WHEN it happens</span>
+<span class="n">button</span><span class="o">.</span><span class="n">when_released</span> <span class="o">=</span> <span class="n">led</span><span class="o">.</span><span class="n">off</span>
+
+<span class="n">pause</span><span class="p">()</span>    <span class="c1"># keep the program alive, waiting for events</span>
+</code></pre></div>
+
+<p>Same behaviour, no loop: you <em>declare what should happen</em>, and <code>gpiozero</code> watches the hardware for you. This style scales much better once three sensors and two outputs are in play.</p>
+<div class="admonition note">
+<p class="admonition-title">Where did debouncing go?</p>
+<p><code>Button(2, pull_up=False, bounce_time=0.05)</code> — one argument replaces Lesson 2's whole millis-timing dance. Libraries are compressed experience.</p>
+</div>
+<hr />
+<h2 id="part-d-core-build-toggle-the-python-way-35-min">Part D — Core build: toggle, the Python way (~35 min)</h2>
+<p>Lesson 2's toggle extension took careful edge-and-bounce logic in C++. Rebuild it in Python:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">gpiozero</span> <span class="kn">import</span> <span class="n">LED</span><span class="p">,</span> <span class="n">Button</span>
+<span class="kn">from</span> <span class="nn">signal</span> <span class="kn">import</span> <span class="n">pause</span>
+
+<span class="n">led</span> <span class="o">=</span> <span class="n">LED</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">pull_up</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bounce_time</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">flip</span><span class="p">():</span>
+    <span class="n">led</span><span class="o">.</span><span class="n">toggle</span><span class="p">()</span>                       <span class="c1"># gpiozero even gives us toggle()</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;ON&quot;</span> <span class="k">if</span> <span class="n">led</span><span class="o">.</span><span class="n">is_lit</span> <span class="k">else</span> <span class="s2">&quot;OFF&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LED is now </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>       <span class="c1"># your serial-monitor habit, Pi style</span>
+
+<span class="n">button</span><span class="o">.</span><span class="n">when_pressed</span> <span class="o">=</span> <span class="n">flip</span>
+<span class="n">pause</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="check-your-work">✅ Check your work</h3>
+<p><strong>Success looks like:</strong> each press flips the LED once — crisply, no double-flips — and the Shell prints the state each time.</p>
+<div class="admonition warning">
+<p class="admonition-title"><code>GPIODeviceError: pin already in use</code>?</p>
+<p>A previous run still owns the pin. Press Thonny's red <strong>Stop</strong> button, then Run again. (Only one program can hold a GPIO pin at a time.)</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Button does nothing?</p>
+<p>Check you wired <strong>GPIO2 = physical pin 3</strong> (not physical pin 2!), and the other button leg to <strong>3.3 V, never 5 V</strong>. The pinout diagram is not optional; every Pi wiring bug starts here.</p>
+</div>
+<hr />
+<h2 id="extension-challenge">Extension / challenge</h2>
+<ol>
+<li><strong>Hold to dim</strong> — move the LED to <strong>GPIO18</strong> (physical pin 12 — a hardware PWM pin), swap <code>LED</code> for <code>PWMLED</code>, and make holding the button ramp brightness up and down. (<code>PWMLED(18).value</code> takes 0.0–1.0.)</li>
+<li><strong>Reaction game, ported</strong> — if you built Lesson 5's reaction timer, rewrite it in Python with <code>time.time()</code> and callbacks. Compare line counts.</li>
+<li><strong>Two-button dimmer</strong> — one button brightens, one dims, with the level printed on each press.</li>
+</ol>
+<h2 id="code">Code</h2>
+<p>All code in <a href="https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-07"><code>code/lesson-07/</code></a>:</p>
+<ul>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-07/blink.py"><code>blink.py</code></a> — Part B</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-07/button_polling.py"><code>button_polling.py</code></a> / <a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-07/button_callbacks.py"><code>button_callbacks.py</code></a> — Part C</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-07/button_toggle.py"><code>button_toggle.py</code></a> — Part D core build</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-07/pwm_dimmer.py"><code>pwm_dimmer.py</code></a> — Extension 1 starter</li>
+</ul>
+<p><strong>Next up:</strong> <a href="lesson-08-pi-buses.html">Lesson 8 — Raspberry Pi: analog (ADC), I2C &amp; SPI</a></p>
+    <nav class="pagenav"><a class="prev" href="lesson-06-pi-intro.html"><span class="lbl">&larr; Previous</span>6. Linux &amp; Remote Access</a><a class="next" href="lesson-08-pi-buses.html"><span class="lbl">Next &rarr;</span>8. ADC, I2C &amp; SPI</a></nav>
+  </main>
+  <footer class="sas">Shanghai American School &middot; Puxi High School &middot; <b>Advanced Physical Computing</b> &middot; Semester 1, 2026&ndash;27</footer>
+</div>
+<script>
+// Copy buttons (idempotent — safe if markup already contains one)
+document.querySelectorAll('pre').forEach(function(pre){
+  if(pre.querySelector('.copy-btn'))return;
+  var b=document.createElement('button');b.className='copy-btn';b.textContent='Copy';
+  b.addEventListener('click',function(){
+    var code=pre.querySelector('code')||pre;
+    navigator.clipboard.writeText(code.innerText).then(function(){b.textContent='Copied';
+      setTimeout(function(){b.textContent='Copy';},1500);});
+  });
+  pre.appendChild(b);
+});
+// Save this single self-contained page to the student's laptop
+function downloadThisLesson(){
+  var html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(location.pathname.split('/').pop()||'lesson.html');
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+}
+</script>
+</body>
+</html>

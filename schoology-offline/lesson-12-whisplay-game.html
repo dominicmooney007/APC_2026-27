@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12. Whisplay Game — Advanced Physical Computing</title>
+<style>
+:root{
+  --sas-navy:#1B2A5E; --sas-crimson:#C8102E; --sas-gold:#F0B432;
+  --sas-charcoal:#2C2C2C; --sas-gray:#F4F4F4; --sas-teal:#005F73; --sas-white:#fff;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-charcoal);
+  background:var(--sas-gray);line-height:1.7;font-size:17px;}
+.wrap{max-width:860px;margin:0 auto;background:var(--sas-white);
+  min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,.06);}
+/* Banner */
+.banner{background:var(--sas-navy);border-bottom:3px solid var(--sas-gold);
+  padding:18px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.sas-logo-box{display:inline-flex;flex-direction:column;border:2px solid #fff;
+  padding:6px 12px;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.22em;text-transform:uppercase;line-height:1.25;color:#fff;position:relative;}
+.sas-logo-sub{position:absolute;bottom:-2px;right:-2px;border:2px solid #fff;
+  padding:1px 6px;font-size:8px;letter-spacing:.18em;background:var(--sas-navy);line-height:1.5;}
+.banner .course{color:#fff;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;
+  letter-spacing:.12em;font-size:15px;text-align:right;opacity:.92;}
+.banner .course b{color:var(--sas-gold);font-weight:700;}
+/* Content */
+.content{padding:34px 40px 60px;}
+.content h1{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:34px;letter-spacing:.02em;line-height:1.12;
+  border-top:3px solid var(--sas-gold);padding-top:18px;margin:.2em 0 .6em;}
+.content h2{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:24px;letter-spacing:.03em;margin:1.7em 0 .5em;
+  padding-bottom:6px;border-bottom:2px solid #e3e6ef;}
+.content h3{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-teal);font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;font-size:15px;margin:1.5em 0 .4em;}
+.content h4{color:var(--sas-navy);font-size:16px;margin:1.3em 0 .3em;}
+.content a{color:var(--sas-crimson);text-decoration:none;border-bottom:1px solid rgba(200,16,46,.35);}
+.content a:hover{border-bottom-color:var(--sas-crimson);}
+blockquote{margin:1.2em 0;padding:.6em 1.1em;background:var(--sas-gray);
+  border-left:4px solid var(--sas-gold);color:#444;font-style:italic;}
+blockquote p{margin:.3em 0;}
+hr{border:0;border-top:2px solid #e3e6ef;margin:2em 0;}
+/* Tables */
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:15.5px;}
+th{background:var(--sas-navy);color:var(--sas-gold);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;text-align:left;
+  padding:9px 12px;}
+td{padding:8px 12px;border-bottom:1px solid #e7e9f0;vertical-align:top;}
+tr:nth-child(even) td{background:var(--sas-gray);}
+/* Inline + block code */
+code{font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:.9em;background:#eef0f6;color:#22245e;
+  padding:.12em .4em;border-radius:0;}
+pre{position:relative;margin:1.3em 0;}
+.codehilite,pre>code{display:block;background:#1a1a2e;color:#f2f2f2;
+  border-top:3px solid var(--sas-gold);padding:16px 18px;overflow:auto;
+  font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:14px;line-height:1.55;}
+.codehilite code{background:none;color:inherit;padding:0;}
+.codehilite pre{margin:0;}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);
+  color:#fff;border:1px solid rgba(255,255,255,.25);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;
+  cursor:pointer;z-index:2;}
+.copy-btn:hover{background:var(--sas-crimson);border-color:var(--sas-crimson);}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #f8f8f2 }
+.codehilite .c { color: #75715e } /* Comment */
+.codehilite .err { color: #960050; background-color: #1e0010 } /* Error */
+.codehilite .esc { color: #f8f8f2 } /* Escape */
+.codehilite .g { color: #f8f8f2 } /* Generic */
+.codehilite .k { color: #66d9ef } /* Keyword */
+.codehilite .l { color: #ae81ff } /* Literal */
+.codehilite .n { color: #f8f8f2 } /* Name */
+.codehilite .o { color: #f92672 } /* Operator */
+.codehilite .x { color: #f8f8f2 } /* Other */
+.codehilite .p { color: #f8f8f2 } /* Punctuation */
+.codehilite .ch { color: #75715e } /* Comment.Hashbang */
+.codehilite .cm { color: #75715e } /* Comment.Multiline */
+.codehilite .cp { color: #75715e } /* Comment.Preproc */
+.codehilite .cpf { color: #75715e } /* Comment.PreprocFile */
+.codehilite .c1 { color: #75715e } /* Comment.Single */
+.codehilite .cs { color: #75715e } /* Comment.Special */
+.codehilite .gd { color: #f92672 } /* Generic.Deleted */
+.codehilite .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.codehilite .gr { color: #f8f8f2 } /* Generic.Error */
+.codehilite .gh { color: #f8f8f2 } /* Generic.Heading */
+.codehilite .gi { color: #a6e22e } /* Generic.Inserted */
+.codehilite .go { color: #66d9ef } /* Generic.Output */
+.codehilite .gp { color: #f92672; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #75715e } /* Generic.Subheading */
+.codehilite .gt { color: #f8f8f2 } /* Generic.Traceback */
+.codehilite .kc { color: #66d9ef } /* Keyword.Constant */
+.codehilite .kd { color: #66d9ef } /* Keyword.Declaration */
+.codehilite .kn { color: #f92672 } /* Keyword.Namespace */
+.codehilite .kp { color: #66d9ef } /* Keyword.Pseudo */
+.codehilite .kr { color: #66d9ef } /* Keyword.Reserved */
+.codehilite .kt { color: #66d9ef } /* Keyword.Type */
+.codehilite .ld { color: #e6db74 } /* Literal.Date */
+.codehilite .m { color: #ae81ff } /* Literal.Number */
+.codehilite .s { color: #e6db74 } /* Literal.String */
+.codehilite .na { color: #a6e22e } /* Name.Attribute */
+.codehilite .nb { color: #f8f8f2 } /* Name.Builtin */
+.codehilite .nc { color: #a6e22e } /* Name.Class */
+.codehilite .no { color: #66d9ef } /* Name.Constant */
+.codehilite .nd { color: #a6e22e } /* Name.Decorator */
+.codehilite .ni { color: #f8f8f2 } /* Name.Entity */
+.codehilite .ne { color: #a6e22e } /* Name.Exception */
+.codehilite .nf { color: #a6e22e } /* Name.Function */
+.codehilite .nl { color: #f8f8f2 } /* Name.Label */
+.codehilite .nn { color: #f8f8f2 } /* Name.Namespace */
+.codehilite .nx { color: #a6e22e } /* Name.Other */
+.codehilite .py { color: #f8f8f2 } /* Name.Property */
+.codehilite .nt { color: #f92672 } /* Name.Tag */
+.codehilite .nv { color: #f8f8f2 } /* Name.Variable */
+.codehilite .ow { color: #f92672 } /* Operator.Word */
+.codehilite .w { color: #f8f8f2 } /* Text.Whitespace */
+.codehilite .mb { color: #ae81ff } /* Literal.Number.Bin */
+.codehilite .mf { color: #ae81ff } /* Literal.Number.Float */
+.codehilite .mh { color: #ae81ff } /* Literal.Number.Hex */
+.codehilite .mi { color: #ae81ff } /* Literal.Number.Integer */
+.codehilite .mo { color: #ae81ff } /* Literal.Number.Oct */
+.codehilite .sa { color: #e6db74 } /* Literal.String.Affix */
+.codehilite .sb { color: #e6db74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #e6db74 } /* Literal.String.Char */
+.codehilite .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #e6db74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #e6db74 } /* Literal.String.Double */
+.codehilite .se { color: #ae81ff } /* Literal.String.Escape */
+.codehilite .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #e6db74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #e6db74 } /* Literal.String.Other */
+.codehilite .sr { color: #e6db74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #e6db74 } /* Literal.String.Single */
+.codehilite .ss { color: #e6db74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #a6e22e } /* Name.Function.Magic */
+.codehilite .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.codehilite .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.codehilite .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.codehilite .il { color: #ae81ff } /* Literal.Number.Integer.Long */
+/* Admonitions */
+.admonition{margin:1.4em 0;border:1px solid #e0e3ec;border-left-width:5px;
+  background:#fafbfe;padding:0 16px 12px;}
+.admonition-title{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;font-size:13px;margin:0 -16px 8px;padding:9px 16px;
+  background:#eef1f8;color:var(--sas-navy);}
+.admonition.note{border-left-color:var(--sas-teal);}
+.admonition.note .admonition-title{background:#e4f0f2;color:var(--sas-teal);}
+.admonition.tip,.admonition.hint{border-left-color:#1f9d55;}
+.admonition.tip .admonition-title,.admonition.hint .admonition-title{background:#e4f4ea;color:#1f7a45;}
+.admonition.warning,.admonition.caution{border-left-color:var(--sas-gold);}
+.admonition.warning .admonition-title,.admonition.caution .admonition-title{background:#fdf3dc;color:#8a6400;}
+.admonition.danger,.admonition.error{border-left-color:var(--sas-crimson);}
+.admonition.danger .admonition-title,.admonition.error .admonition-title{background:#fbe4e7;color:var(--sas-crimson);}
+.admonition>p:last-child{margin-bottom:0;}
+details.admonition{padding-bottom:0;}
+details.admonition>.admonition-title{cursor:pointer;margin-bottom:0;}
+details[open].admonition>.admonition-title{margin-bottom:8px;}
+img{max-width:100%;height:auto;}
+/* Offline notice + nav */
+.offline-note{background:#fdf3dc;border:1px solid var(--sas-gold);border-left:5px solid var(--sas-gold);
+  padding:10px 16px;font-size:14px;margin:0 0 12px;color:#6b5108;}
+.dl-bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px;}
+.dl-btn{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;padding:9px 16px;border:1px solid var(--sas-navy);background:#fff;
+  color:var(--sas-navy);cursor:pointer;text-decoration:none;display:inline-block;line-height:1;}
+.dl-btn:hover{background:var(--sas-navy);color:#fff;border-bottom-color:var(--sas-navy);}
+.dl-btn.primary{background:var(--sas-crimson);border-color:var(--sas-crimson);color:#fff;}
+.dl-btn.primary:hover{background:#a30d26;border-color:#a30d26;}
+.pagenav{display:flex;justify-content:space-between;gap:12px;margin:36px 0 0;
+  border-top:2px solid #e3e6ef;padding-top:18px;flex-wrap:wrap;}
+.pagenav a{flex:1;min-width:160px;border:1px solid #d7dae6;padding:10px 14px;
+  text-decoration:none;border-bottom:1px solid #d7dae6;color:var(--sas-navy);
+  font-size:14px;background:#fff;}
+.pagenav a:hover{border-color:var(--sas-navy);}
+.pagenav .lbl{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;
+  color:#999;margin-bottom:2px;}
+.pagenav .next{text-align:right;}
+footer.sas{background:var(--sas-navy);color:#c7cde4;padding:16px 40px;
+  font-size:12px;letter-spacing:.04em;text-align:center;border-top:3px solid var(--sas-gold);}
+footer.sas b{color:var(--sas-gold);}
+@media(max-width:640px){.banner,.content,footer.sas{padding-left:20px;padding-right:20px;}}
+@media print{body{background:#fff;}.wrap{box-shadow:none;max-width:100%;}.copy-btn{display:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="banner">
+    <span class="sas-logo-box">SHANGHAI<br>AMERICAN<br>SCHOOL<span class="sas-logo-sub">PX</span></span>
+    <span class="course">Advanced Physical<br><b>Computing</b> · 2026&ndash;27</span>
+  </header>
+  <main class="content">
+    <div class="offline-note">Offline copy for download. The live version with search lives on the course GitHub site.</div>
+    <div class="dl-bar">
+      <button class="dl-btn primary" onclick="downloadThisLesson()">&#8681; Download this lesson</button>
+      <a class="dl-btn" href="APC-Semester1-Offline.zip" download>&#8681; Download whole course (.zip)</a>
+    </div>
+    <h1 id="lesson-12-whisplay-mini-project-single-button-game">Lesson 12 — Whisplay Mini-Project: Single-Button Game</h1>
+<blockquote>
+<p>Take a working game apart, understand its loop, and rebuild it as <em>your</em> game. <strong>Third graded build.</strong></p>
+</blockquote>
+<p><strong>Platform:</strong> Whisplay
+<strong>Estimated time:</strong> ~120 min hands-on
+<strong>Prerequisites:</strong> <a href="lesson-11-whisplay-io.html">Lesson 11</a> — button events, LED, audio, PIL→LCD</p>
+<h2 id="the-brief">The brief</h2>
+<p>The driver repo ships two complete single-button games — play them first:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> Whisplay/example
+sudo python3 flappy_bird.py     <span class="c1"># short press = flap</span>
+sudo python3 jump_game.py       <span class="c1"># hold to charge, release to jump</span>
+</code></pre></div>
+
+<p>Your job is <strong>not</strong> to write a game from scratch. It's the more realistic skill: <strong>take working code you didn't write, understand it, and change it into something meaningfully yours.</strong> Pick one game as your base and modify it.</p>
+<h2 id="requirements-what-gets-graded">Requirements (what gets graded)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>At least <strong>three meaningful modifications</strong> (see tiers below) — cosmetic-only doesn't count</td>
+</tr>
+<tr>
+<td>2</td>
+<td>You can <strong>explain the game loop</strong> of your base game: where input is read, where state updates, where the frame is drawn</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Game is <strong>winnable/losable</strong> and restartable without rerunning the script</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Code in the repo format + a <code>CHANGES.md</code> listing what you changed and where</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Someone else <strong>playtests</strong> your game in the final 20 minutes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Modification tiers</strong> (mix at least one Tier 2+):</p>
+<ul>
+<li><strong>Tier 1 (easy):</strong> new colours/graphics, new sounds (Lesson 11 skills!), different speeds/gravity, new title screen.</li>
+<li><strong>Tier 2 (real):</strong> scoring change (combo, multiplier), difficulty ramp over time, lives system, obstacles that behave differently, LED reacts to game state (danger = red).</li>
+<li><strong>Tier 3 (ambitious):</strong> new mechanic (moving gaps, power-ups), two-phase gameplay, persistent high score saved to a file.</li>
+</ul>
+<h2 id="todays-plan-120-min">Today's plan (~120 min)</h2>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Phase</th>
+<th>What you're doing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~15 min</td>
+<td>Play &amp; pick</td>
+<td>Play both games; choose your base</td>
+</tr>
+<tr>
+<td>~25 min</td>
+<td>Read</td>
+<td>Map the game loop (worksheet below); plan your 3 mods</td>
+</tr>
+<tr>
+<td>~55 min</td>
+<td>Mod</td>
+<td>Change → run → test, one modification at a time</td>
+</tr>
+<tr>
+<td>~20 min</td>
+<td>Playtest</td>
+<td>Swap seats, play each other's games, demo</td>
+</tr>
+<tr>
+<td>~5 min</td>
+<td>Submit</td>
+<td>Code + <code>CHANGES.md</code> to the repo/hand-in</td>
+</tr>
+</tbody>
+</table>
+<h2 id="reading-someone-elses-code-the-worksheet">Reading someone else's code (the worksheet)</h2>
+<p>Before changing anything, find and note the line numbers where your base game:</p>
+<ol>
+<li>…reads the <strong>button</strong> (look for <code>on_button_press</code> / <code>button_pressed</code>)</li>
+<li>…updates the <strong>world</strong> (position, velocity, obstacles — usually inside <code>while</code> loop math)</li>
+<li>…detects <strong>collision / game over</strong></li>
+<li>…<strong>draws the frame</strong> (look for <code>draw_image</code> and the PIL drawing before it)</li>
+<li>…plays a <strong>sound</strong></li>
+<li>…tracks the <strong>score</strong></li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Change one number first</p>
+<p>Before your real mods, change one constant (gravity, speed, a colour) and rerun. Two minutes, and now you <em>know</em> your edit-run loop works and roughly how the code responds. Then start the real work.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Copy the file first</p>
+<p>Work on <code>my_game.py</code>, not the original — you want a known-good version to diff against when something breaks:
+<code>bash
+cp flappy_bird.py my_game.py</code></p>
+</div>
+<h2 id="check-your-work">Check your work</h2>
+<ul>
+<li>All three mods present and demonstrable, one of them Tier 2+.</li>
+<li>Cold start works: reboot the Pi, run the game, everything (screen, sound, LED, button) still behaves.</li>
+<li>Your <code>CHANGES.md</code> matches what the playtester actually experienced.</li>
+</ul>
+<h2 id="extension-challenge">Extension / challenge</h2>
+<p>Finished with time to spare? <strong>High-score persistence</strong> (write to a file, survive restarts, show on the title screen) is the most satisfying Tier 3 — small enough to finish, real enough to demo.</p>
+<div class="admonition note">
+<p class="admonition-title">Where this leads</p>
+<p>The <a href="https://github.com/PiSugar/whisplay-ai-chatbot"><code>whisplay-ai-chatbot</code></a> project (GPL-3.0) turns this same HAT into a push-to-talk voice AI assistant. Heavy setup (Node + Python + API keys) puts it out of scope this semester, but it's a legitimate capstone stretch if you want one — talk to me.</p>
+</div>
+<h2 id="code">Code</h2>
+<ul>
+<li>Your base: <code>Whisplay/example/flappy_bird.py</code> or <code>jump_game.py</code> — © PiSugar, <a href="https://github.com/PiSugar/Whisplay/blob/main/LICENSE">Apache-2.0</a>. Keep the attribution comment at the top of your modified file.</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-12/CHANGES-template.md"><code>code/lesson-12/CHANGES-template.md</code></a> — the required change log format.</li>
+</ul>
+<p><strong>Next up:</strong> <a href="lesson-13-capstone-build.html">Lesson 13 — Mini-capstone: proposal &amp; build</a></p>
+    <nav class="pagenav"><a class="prev" href="lesson-11-whisplay-io.html"><span class="lbl">&larr; Previous</span>11. Buttons, LED &amp; Audio</a><a class="next" href="lesson-13-capstone-build.html"><span class="lbl">Next &rarr;</span>13. Capstone Build</a></nav>
+  </main>
+  <footer class="sas">Shanghai American School &middot; Puxi High School &middot; <b>Advanced Physical Computing</b> &middot; Semester 1, 2026&ndash;27</footer>
+</div>
+<script>
+// Copy buttons (idempotent — safe if markup already contains one)
+document.querySelectorAll('pre').forEach(function(pre){
+  if(pre.querySelector('.copy-btn'))return;
+  var b=document.createElement('button');b.className='copy-btn';b.textContent='Copy';
+  b.addEventListener('click',function(){
+    var code=pre.querySelector('code')||pre;
+    navigator.clipboard.writeText(code.innerText).then(function(){b.textContent='Copied';
+      setTimeout(function(){b.textContent='Copy';},1500);});
+  });
+  pre.appendChild(b);
+});
+// Save this single self-contained page to the student's laptop
+function downloadThisLesson(){
+  var html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(location.pathname.split('/').pop()||'lesson.html');
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+}
+</script>
+</body>
+</html>

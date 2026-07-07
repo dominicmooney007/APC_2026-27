@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5. Arduino Mini-project — Advanced Physical Computing</title>
+<style>
+:root{
+  --sas-navy:#1B2A5E; --sas-crimson:#C8102E; --sas-gold:#F0B432;
+  --sas-charcoal:#2C2C2C; --sas-gray:#F4F4F4; --sas-teal:#005F73; --sas-white:#fff;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-charcoal);
+  background:var(--sas-gray);line-height:1.7;font-size:17px;}
+.wrap{max-width:860px;margin:0 auto;background:var(--sas-white);
+  min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,.06);}
+/* Banner */
+.banner{background:var(--sas-navy);border-bottom:3px solid var(--sas-gold);
+  padding:18px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.sas-logo-box{display:inline-flex;flex-direction:column;border:2px solid #fff;
+  padding:6px 12px;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.22em;text-transform:uppercase;line-height:1.25;color:#fff;position:relative;}
+.sas-logo-sub{position:absolute;bottom:-2px;right:-2px;border:2px solid #fff;
+  padding:1px 6px;font-size:8px;letter-spacing:.18em;background:var(--sas-navy);line-height:1.5;}
+.banner .course{color:#fff;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;
+  letter-spacing:.12em;font-size:15px;text-align:right;opacity:.92;}
+.banner .course b{color:var(--sas-gold);font-weight:700;}
+/* Content */
+.content{padding:34px 40px 60px;}
+.content h1{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:34px;letter-spacing:.02em;line-height:1.12;
+  border-top:3px solid var(--sas-gold);padding-top:18px;margin:.2em 0 .6em;}
+.content h2{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:24px;letter-spacing:.03em;margin:1.7em 0 .5em;
+  padding-bottom:6px;border-bottom:2px solid #e3e6ef;}
+.content h3{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-teal);font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;font-size:15px;margin:1.5em 0 .4em;}
+.content h4{color:var(--sas-navy);font-size:16px;margin:1.3em 0 .3em;}
+.content a{color:var(--sas-crimson);text-decoration:none;border-bottom:1px solid rgba(200,16,46,.35);}
+.content a:hover{border-bottom-color:var(--sas-crimson);}
+blockquote{margin:1.2em 0;padding:.6em 1.1em;background:var(--sas-gray);
+  border-left:4px solid var(--sas-gold);color:#444;font-style:italic;}
+blockquote p{margin:.3em 0;}
+hr{border:0;border-top:2px solid #e3e6ef;margin:2em 0;}
+/* Tables */
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:15.5px;}
+th{background:var(--sas-navy);color:var(--sas-gold);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;text-align:left;
+  padding:9px 12px;}
+td{padding:8px 12px;border-bottom:1px solid #e7e9f0;vertical-align:top;}
+tr:nth-child(even) td{background:var(--sas-gray);}
+/* Inline + block code */
+code{font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:.9em;background:#eef0f6;color:#22245e;
+  padding:.12em .4em;border-radius:0;}
+pre{position:relative;margin:1.3em 0;}
+.codehilite,pre>code{display:block;background:#1a1a2e;color:#f2f2f2;
+  border-top:3px solid var(--sas-gold);padding:16px 18px;overflow:auto;
+  font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:14px;line-height:1.55;}
+.codehilite code{background:none;color:inherit;padding:0;}
+.codehilite pre{margin:0;}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);
+  color:#fff;border:1px solid rgba(255,255,255,.25);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;
+  cursor:pointer;z-index:2;}
+.copy-btn:hover{background:var(--sas-crimson);border-color:var(--sas-crimson);}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #f8f8f2 }
+.codehilite .c { color: #75715e } /* Comment */
+.codehilite .err { color: #960050; background-color: #1e0010 } /* Error */
+.codehilite .esc { color: #f8f8f2 } /* Escape */
+.codehilite .g { color: #f8f8f2 } /* Generic */
+.codehilite .k { color: #66d9ef } /* Keyword */
+.codehilite .l { color: #ae81ff } /* Literal */
+.codehilite .n { color: #f8f8f2 } /* Name */
+.codehilite .o { color: #f92672 } /* Operator */
+.codehilite .x { color: #f8f8f2 } /* Other */
+.codehilite .p { color: #f8f8f2 } /* Punctuation */
+.codehilite .ch { color: #75715e } /* Comment.Hashbang */
+.codehilite .cm { color: #75715e } /* Comment.Multiline */
+.codehilite .cp { color: #75715e } /* Comment.Preproc */
+.codehilite .cpf { color: #75715e } /* Comment.PreprocFile */
+.codehilite .c1 { color: #75715e } /* Comment.Single */
+.codehilite .cs { color: #75715e } /* Comment.Special */
+.codehilite .gd { color: #f92672 } /* Generic.Deleted */
+.codehilite .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.codehilite .gr { color: #f8f8f2 } /* Generic.Error */
+.codehilite .gh { color: #f8f8f2 } /* Generic.Heading */
+.codehilite .gi { color: #a6e22e } /* Generic.Inserted */
+.codehilite .go { color: #66d9ef } /* Generic.Output */
+.codehilite .gp { color: #f92672; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #75715e } /* Generic.Subheading */
+.codehilite .gt { color: #f8f8f2 } /* Generic.Traceback */
+.codehilite .kc { color: #66d9ef } /* Keyword.Constant */
+.codehilite .kd { color: #66d9ef } /* Keyword.Declaration */
+.codehilite .kn { color: #f92672 } /* Keyword.Namespace */
+.codehilite .kp { color: #66d9ef } /* Keyword.Pseudo */
+.codehilite .kr { color: #66d9ef } /* Keyword.Reserved */
+.codehilite .kt { color: #66d9ef } /* Keyword.Type */
+.codehilite .ld { color: #e6db74 } /* Literal.Date */
+.codehilite .m { color: #ae81ff } /* Literal.Number */
+.codehilite .s { color: #e6db74 } /* Literal.String */
+.codehilite .na { color: #a6e22e } /* Name.Attribute */
+.codehilite .nb { color: #f8f8f2 } /* Name.Builtin */
+.codehilite .nc { color: #a6e22e } /* Name.Class */
+.codehilite .no { color: #66d9ef } /* Name.Constant */
+.codehilite .nd { color: #a6e22e } /* Name.Decorator */
+.codehilite .ni { color: #f8f8f2 } /* Name.Entity */
+.codehilite .ne { color: #a6e22e } /* Name.Exception */
+.codehilite .nf { color: #a6e22e } /* Name.Function */
+.codehilite .nl { color: #f8f8f2 } /* Name.Label */
+.codehilite .nn { color: #f8f8f2 } /* Name.Namespace */
+.codehilite .nx { color: #a6e22e } /* Name.Other */
+.codehilite .py { color: #f8f8f2 } /* Name.Property */
+.codehilite .nt { color: #f92672 } /* Name.Tag */
+.codehilite .nv { color: #f8f8f2 } /* Name.Variable */
+.codehilite .ow { color: #f92672 } /* Operator.Word */
+.codehilite .w { color: #f8f8f2 } /* Text.Whitespace */
+.codehilite .mb { color: #ae81ff } /* Literal.Number.Bin */
+.codehilite .mf { color: #ae81ff } /* Literal.Number.Float */
+.codehilite .mh { color: #ae81ff } /* Literal.Number.Hex */
+.codehilite .mi { color: #ae81ff } /* Literal.Number.Integer */
+.codehilite .mo { color: #ae81ff } /* Literal.Number.Oct */
+.codehilite .sa { color: #e6db74 } /* Literal.String.Affix */
+.codehilite .sb { color: #e6db74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #e6db74 } /* Literal.String.Char */
+.codehilite .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #e6db74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #e6db74 } /* Literal.String.Double */
+.codehilite .se { color: #ae81ff } /* Literal.String.Escape */
+.codehilite .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #e6db74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #e6db74 } /* Literal.String.Other */
+.codehilite .sr { color: #e6db74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #e6db74 } /* Literal.String.Single */
+.codehilite .ss { color: #e6db74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #a6e22e } /* Name.Function.Magic */
+.codehilite .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.codehilite .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.codehilite .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.codehilite .il { color: #ae81ff } /* Literal.Number.Integer.Long */
+/* Admonitions */
+.admonition{margin:1.4em 0;border:1px solid #e0e3ec;border-left-width:5px;
+  background:#fafbfe;padding:0 16px 12px;}
+.admonition-title{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;font-size:13px;margin:0 -16px 8px;padding:9px 16px;
+  background:#eef1f8;color:var(--sas-navy);}
+.admonition.note{border-left-color:var(--sas-teal);}
+.admonition.note .admonition-title{background:#e4f0f2;color:var(--sas-teal);}
+.admonition.tip,.admonition.hint{border-left-color:#1f9d55;}
+.admonition.tip .admonition-title,.admonition.hint .admonition-title{background:#e4f4ea;color:#1f7a45;}
+.admonition.warning,.admonition.caution{border-left-color:var(--sas-gold);}
+.admonition.warning .admonition-title,.admonition.caution .admonition-title{background:#fdf3dc;color:#8a6400;}
+.admonition.danger,.admonition.error{border-left-color:var(--sas-crimson);}
+.admonition.danger .admonition-title,.admonition.error .admonition-title{background:#fbe4e7;color:var(--sas-crimson);}
+.admonition>p:last-child{margin-bottom:0;}
+details.admonition{padding-bottom:0;}
+details.admonition>.admonition-title{cursor:pointer;margin-bottom:0;}
+details[open].admonition>.admonition-title{margin-bottom:8px;}
+img{max-width:100%;height:auto;}
+/* Offline notice + nav */
+.offline-note{background:#fdf3dc;border:1px solid var(--sas-gold);border-left:5px solid var(--sas-gold);
+  padding:10px 16px;font-size:14px;margin:0 0 12px;color:#6b5108;}
+.dl-bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px;}
+.dl-btn{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;padding:9px 16px;border:1px solid var(--sas-navy);background:#fff;
+  color:var(--sas-navy);cursor:pointer;text-decoration:none;display:inline-block;line-height:1;}
+.dl-btn:hover{background:var(--sas-navy);color:#fff;border-bottom-color:var(--sas-navy);}
+.dl-btn.primary{background:var(--sas-crimson);border-color:var(--sas-crimson);color:#fff;}
+.dl-btn.primary:hover{background:#a30d26;border-color:#a30d26;}
+.pagenav{display:flex;justify-content:space-between;gap:12px;margin:36px 0 0;
+  border-top:2px solid #e3e6ef;padding-top:18px;flex-wrap:wrap;}
+.pagenav a{flex:1;min-width:160px;border:1px solid #d7dae6;padding:10px 14px;
+  text-decoration:none;border-bottom:1px solid #d7dae6;color:var(--sas-navy);
+  font-size:14px;background:#fff;}
+.pagenav a:hover{border-color:var(--sas-navy);}
+.pagenav .lbl{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;
+  color:#999;margin-bottom:2px;}
+.pagenav .next{text-align:right;}
+footer.sas{background:var(--sas-navy);color:#c7cde4;padding:16px 40px;
+  font-size:12px;letter-spacing:.04em;text-align:center;border-top:3px solid var(--sas-gold);}
+footer.sas b{color:var(--sas-gold);}
+@media(max-width:640px){.banner,.content,footer.sas{padding-left:20px;padding-right:20px;}}
+@media print{body{background:#fff;}.wrap{box-shadow:none;max-width:100%;}.copy-btn{display:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="banner">
+    <span class="sas-logo-box">SHANGHAI<br>AMERICAN<br>SCHOOL<span class="sas-logo-sub">PX</span></span>
+    <span class="course">Advanced Physical<br><b>Computing</b> · 2026&ndash;27</span>
+  </header>
+  <main class="content">
+    <div class="offline-note">Offline copy for download. The live version with search lives on the course GitHub site.</div>
+    <div class="dl-bar">
+      <button class="dl-btn primary" onclick="downloadThisLesson()">&#8681; Download this lesson</button>
+      <a class="dl-btn" href="APC-Semester1-Offline.zip" download>&#8681; Download whole course (.zip)</a>
+    </div>
+    <h1 id="lesson-05-arduino-mini-project-interactive-reactive-device">Lesson 05 — Arduino Mini-Project: Interactive Reactive Device</h1>
+<blockquote>
+<p>Design and build one device that senses something, decides something, and does something. <strong>First graded build.</strong></p>
+</blockquote>
+<p><strong>Platform:</strong> Arduino
+<strong>Estimated time:</strong> ~120 min hands-on
+<strong>Prerequisites:</strong> <a href="lesson-02-arduino-digital.html">Lessons 2–4</a> — everything so far</p>
+<h2 id="the-brief">The brief</h2>
+<p>Build a device that follows the pattern behind all physical computing:</p>
+<p><strong>INPUT</strong> (a sensor you choose) → <strong>LOGIC</strong> (decisions in your code) → <strong>OUTPUT</strong> (something a person can see, hear, or watch move)</p>
+<p>You have everything you need: buttons, the pot, DHT22, HC-SR04 for input; LEDs, the LCD, the buzzer, servo, and (at the demo station) the L298N fan for output; <code>if</code>/<code>map()</code>/serial for the logic in between.</p>
+<h2 id="requirements-what-gets-graded">Requirements (what gets graded)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>At least <strong>one sensor input</strong> and <strong>one physical output</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Logic that makes a <em>decision</em> — not just input piped straight to output</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>Serial.println</code> debugging output showing the device's state</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Code in the class repo format: named sketch folder, comment header saying what it does and how it's wired</td>
+</tr>
+<tr>
+<td>5</td>
+<td>A working <strong>demo</strong> in the last 15 minutes</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Working &amp; simple beats ambitious &amp; broken</p>
+<p>A finished two-component device demos better than an unfinished four-component one. Scope small; extend if time remains.</p>
+</div>
+<h2 id="project-ideas-pick-one-or-invent-your-own">Project ideas (pick one or invent your own)</h2>
+<ul>
+<li><strong>Parking sensor, finished</strong> — take Lesson 4's core build further: beep rate scales with distance, LCD shows a zone bar, knob adjusts the alert threshold.</li>
+<li><strong>Auto gate</strong> — HC-SR04 + servo + LCD: gate opens when a "vehicle" approaches, closes 5 s after it clears, LCD narrates the state. (Last year's class favourite — build your own version, then compare with the state-machine starter.)</li>
+<li><strong>Smart fan</strong> — DHT22 + L298N fan: fan kicks in above a set temperature, speed scales with heat, LCD shows temp + fan %. Knob overrides manually.</li>
+<li><strong>Climate alarm</strong> — DHT22 + buzzer + LCD: alert when humidity or temperature leaves a healthy range; different tones for different problems.</li>
+<li><strong>Reaction-time game</strong> — LED + button + LCD scoreboard: random delay, LED on, measure <code>millis()</code> until press; best time on the LCD.</li>
+<li><strong>Instrument</strong> — pot + buzzer theremin from Lesson 3, upgraded: button toggles scales/modes, LCD shows the note.</li>
+</ul>
+<h2 id="todays-plan-120-min">Today's plan (~120 min)</h2>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Phase</th>
+<th>What you're doing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~15 min</td>
+<td>Plan</td>
+<td>Sketch the idea: what's IN, what's OUT, what's the rule in between? Get a thumbs-up before wiring.</td>
+</tr>
+<tr>
+<td>~30 min</td>
+<td>Wire</td>
+<td>Breadboard the circuit. Power off while wiring — as always.</td>
+</tr>
+<tr>
+<td>~50 min</td>
+<td>Code</td>
+<td>Build in slices: sensor printing to serial <em>first</em>, then output, then the logic.</td>
+</tr>
+<tr>
+<td>~15 min</td>
+<td>Demo</td>
+<td>Show it working; explain one problem you hit and how you found it.</td>
+</tr>
+<tr>
+<td>~10 min</td>
+<td>Submit</td>
+<td>Sketch folder into the class repo/hand-in.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Build in slices, not all at once</p>
+<p>Get the sensor printing believable numbers to serial before you write any logic. Half of all project bugs are actually wiring bugs you'd have caught in 30 seconds of <code>Serial.println</code>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Catch-up option</p>
+<p>If you never finished a core build from Lessons 2–4, finishing it <em>is</em> a valid project base — e.g. the Lesson 4 distance dial with zones added becomes the parking sensor.</p>
+</div>
+<h2 id="check-your-work">Check your work</h2>
+<p>Before you call it done:</p>
+<ul>
+<li>Unplug it, plug it back in — does it still work from a cold start?</li>
+<li>Does the serial output tell the story of what it's doing?</li>
+<li>Can you explain every line of your sketch? (You'll be asked about one.)</li>
+</ul>
+<h2 id="extension-challenge">Extension / challenge</h2>
+<p>Finished early? Add a <strong>second output mode</strong> (e.g. the parking sensor gets a "night mode" toggled by a button), or make the thresholds adjustable with the pot instead of hard-coded.</p>
+<h2 id="code">Code</h2>
+<ul>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-05/smart_fan_starter"><code>code/lesson-05/smart_fan_starter/</code></a> — a deliberately <em>incomplete</em> starter for the smart fan showing the required structure (comment header, state via serial). Don't copy it — outdo it.</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-04/auto_gate"><code>code/lesson-04/auto_gate/</code></a> — the auto-gate state machine, if that's your base.</li>
+</ul>
+<p><strong>Next up:</strong> <a href="lesson-06-pi-intro.html">Lesson 6 — Raspberry Pi 5: Linux &amp; remote access</a></p>
+    <nav class="pagenav"><a class="prev" href="lesson-04-arduino-sensors.html"><span class="lbl">&larr; Previous</span>4. Sensors &amp; Actuators</a><a class="next" href="lesson-06-pi-intro.html"><span class="lbl">Next &rarr;</span>6. Linux &amp; Remote Access</a></nav>
+  </main>
+  <footer class="sas">Shanghai American School &middot; Puxi High School &middot; <b>Advanced Physical Computing</b> &middot; Semester 1, 2026&ndash;27</footer>
+</div>
+<script>
+// Copy buttons (idempotent — safe if markup already contains one)
+document.querySelectorAll('pre').forEach(function(pre){
+  if(pre.querySelector('.copy-btn'))return;
+  var b=document.createElement('button');b.className='copy-btn';b.textContent='Copy';
+  b.addEventListener('click',function(){
+    var code=pre.querySelector('code')||pre;
+    navigator.clipboard.writeText(code.innerText).then(function(){b.textContent='Copied';
+      setTimeout(function(){b.textContent='Copy';},1500);});
+  });
+  pre.appendChild(b);
+});
+// Save this single self-contained page to the student's laptop
+function downloadThisLesson(){
+  var html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(location.pathname.split('/').pop()||'lesson.html');
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+}
+</script>
+</body>
+</html>

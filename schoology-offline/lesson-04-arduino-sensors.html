@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Sensors &amp; Actuators — Advanced Physical Computing</title>
+<style>
+:root{
+  --sas-navy:#1B2A5E; --sas-crimson:#C8102E; --sas-gold:#F0B432;
+  --sas-charcoal:#2C2C2C; --sas-gray:#F4F4F4; --sas-teal:#005F73; --sas-white:#fff;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-charcoal);
+  background:var(--sas-gray);line-height:1.7;font-size:17px;}
+.wrap{max-width:860px;margin:0 auto;background:var(--sas-white);
+  min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,.06);}
+/* Banner */
+.banner{background:var(--sas-navy);border-bottom:3px solid var(--sas-gold);
+  padding:18px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.sas-logo-box{display:inline-flex;flex-direction:column;border:2px solid #fff;
+  padding:6px 12px;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.22em;text-transform:uppercase;line-height:1.25;color:#fff;position:relative;}
+.sas-logo-sub{position:absolute;bottom:-2px;right:-2px;border:2px solid #fff;
+  padding:1px 6px;font-size:8px;letter-spacing:.18em;background:var(--sas-navy);line-height:1.5;}
+.banner .course{color:#fff;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;
+  letter-spacing:.12em;font-size:15px;text-align:right;opacity:.92;}
+.banner .course b{color:var(--sas-gold);font-weight:700;}
+/* Content */
+.content{padding:34px 40px 60px;}
+.content h1{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:34px;letter-spacing:.02em;line-height:1.12;
+  border-top:3px solid var(--sas-gold);padding-top:18px;margin:.2em 0 .6em;}
+.content h2{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:24px;letter-spacing:.03em;margin:1.7em 0 .5em;
+  padding-bottom:6px;border-bottom:2px solid #e3e6ef;}
+.content h3{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-teal);font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;font-size:15px;margin:1.5em 0 .4em;}
+.content h4{color:var(--sas-navy);font-size:16px;margin:1.3em 0 .3em;}
+.content a{color:var(--sas-crimson);text-decoration:none;border-bottom:1px solid rgba(200,16,46,.35);}
+.content a:hover{border-bottom-color:var(--sas-crimson);}
+blockquote{margin:1.2em 0;padding:.6em 1.1em;background:var(--sas-gray);
+  border-left:4px solid var(--sas-gold);color:#444;font-style:italic;}
+blockquote p{margin:.3em 0;}
+hr{border:0;border-top:2px solid #e3e6ef;margin:2em 0;}
+/* Tables */
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:15.5px;}
+th{background:var(--sas-navy);color:var(--sas-gold);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;text-align:left;
+  padding:9px 12px;}
+td{padding:8px 12px;border-bottom:1px solid #e7e9f0;vertical-align:top;}
+tr:nth-child(even) td{background:var(--sas-gray);}
+/* Inline + block code */
+code{font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:.9em;background:#eef0f6;color:#22245e;
+  padding:.12em .4em;border-radius:0;}
+pre{position:relative;margin:1.3em 0;}
+.codehilite,pre>code{display:block;background:#1a1a2e;color:#f2f2f2;
+  border-top:3px solid var(--sas-gold);padding:16px 18px;overflow:auto;
+  font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:14px;line-height:1.55;}
+.codehilite code{background:none;color:inherit;padding:0;}
+.codehilite pre{margin:0;}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);
+  color:#fff;border:1px solid rgba(255,255,255,.25);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;
+  cursor:pointer;z-index:2;}
+.copy-btn:hover{background:var(--sas-crimson);border-color:var(--sas-crimson);}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #f8f8f2 }
+.codehilite .c { color: #75715e } /* Comment */
+.codehilite .err { color: #960050; background-color: #1e0010 } /* Error */
+.codehilite .esc { color: #f8f8f2 } /* Escape */
+.codehilite .g { color: #f8f8f2 } /* Generic */
+.codehilite .k { color: #66d9ef } /* Keyword */
+.codehilite .l { color: #ae81ff } /* Literal */
+.codehilite .n { color: #f8f8f2 } /* Name */
+.codehilite .o { color: #f92672 } /* Operator */
+.codehilite .x { color: #f8f8f2 } /* Other */
+.codehilite .p { color: #f8f8f2 } /* Punctuation */
+.codehilite .ch { color: #75715e } /* Comment.Hashbang */
+.codehilite .cm { color: #75715e } /* Comment.Multiline */
+.codehilite .cp { color: #75715e } /* Comment.Preproc */
+.codehilite .cpf { color: #75715e } /* Comment.PreprocFile */
+.codehilite .c1 { color: #75715e } /* Comment.Single */
+.codehilite .cs { color: #75715e } /* Comment.Special */
+.codehilite .gd { color: #f92672 } /* Generic.Deleted */
+.codehilite .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.codehilite .gr { color: #f8f8f2 } /* Generic.Error */
+.codehilite .gh { color: #f8f8f2 } /* Generic.Heading */
+.codehilite .gi { color: #a6e22e } /* Generic.Inserted */
+.codehilite .go { color: #66d9ef } /* Generic.Output */
+.codehilite .gp { color: #f92672; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #75715e } /* Generic.Subheading */
+.codehilite .gt { color: #f8f8f2 } /* Generic.Traceback */
+.codehilite .kc { color: #66d9ef } /* Keyword.Constant */
+.codehilite .kd { color: #66d9ef } /* Keyword.Declaration */
+.codehilite .kn { color: #f92672 } /* Keyword.Namespace */
+.codehilite .kp { color: #66d9ef } /* Keyword.Pseudo */
+.codehilite .kr { color: #66d9ef } /* Keyword.Reserved */
+.codehilite .kt { color: #66d9ef } /* Keyword.Type */
+.codehilite .ld { color: #e6db74 } /* Literal.Date */
+.codehilite .m { color: #ae81ff } /* Literal.Number */
+.codehilite .s { color: #e6db74 } /* Literal.String */
+.codehilite .na { color: #a6e22e } /* Name.Attribute */
+.codehilite .nb { color: #f8f8f2 } /* Name.Builtin */
+.codehilite .nc { color: #a6e22e } /* Name.Class */
+.codehilite .no { color: #66d9ef } /* Name.Constant */
+.codehilite .nd { color: #a6e22e } /* Name.Decorator */
+.codehilite .ni { color: #f8f8f2 } /* Name.Entity */
+.codehilite .ne { color: #a6e22e } /* Name.Exception */
+.codehilite .nf { color: #a6e22e } /* Name.Function */
+.codehilite .nl { color: #f8f8f2 } /* Name.Label */
+.codehilite .nn { color: #f8f8f2 } /* Name.Namespace */
+.codehilite .nx { color: #a6e22e } /* Name.Other */
+.codehilite .py { color: #f8f8f2 } /* Name.Property */
+.codehilite .nt { color: #f92672 } /* Name.Tag */
+.codehilite .nv { color: #f8f8f2 } /* Name.Variable */
+.codehilite .ow { color: #f92672 } /* Operator.Word */
+.codehilite .w { color: #f8f8f2 } /* Text.Whitespace */
+.codehilite .mb { color: #ae81ff } /* Literal.Number.Bin */
+.codehilite .mf { color: #ae81ff } /* Literal.Number.Float */
+.codehilite .mh { color: #ae81ff } /* Literal.Number.Hex */
+.codehilite .mi { color: #ae81ff } /* Literal.Number.Integer */
+.codehilite .mo { color: #ae81ff } /* Literal.Number.Oct */
+.codehilite .sa { color: #e6db74 } /* Literal.String.Affix */
+.codehilite .sb { color: #e6db74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #e6db74 } /* Literal.String.Char */
+.codehilite .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #e6db74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #e6db74 } /* Literal.String.Double */
+.codehilite .se { color: #ae81ff } /* Literal.String.Escape */
+.codehilite .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #e6db74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #e6db74 } /* Literal.String.Other */
+.codehilite .sr { color: #e6db74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #e6db74 } /* Literal.String.Single */
+.codehilite .ss { color: #e6db74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #a6e22e } /* Name.Function.Magic */
+.codehilite .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.codehilite .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.codehilite .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.codehilite .il { color: #ae81ff } /* Literal.Number.Integer.Long */
+/* Admonitions */
+.admonition{margin:1.4em 0;border:1px solid #e0e3ec;border-left-width:5px;
+  background:#fafbfe;padding:0 16px 12px;}
+.admonition-title{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;font-size:13px;margin:0 -16px 8px;padding:9px 16px;
+  background:#eef1f8;color:var(--sas-navy);}
+.admonition.note{border-left-color:var(--sas-teal);}
+.admonition.note .admonition-title{background:#e4f0f2;color:var(--sas-teal);}
+.admonition.tip,.admonition.hint{border-left-color:#1f9d55;}
+.admonition.tip .admonition-title,.admonition.hint .admonition-title{background:#e4f4ea;color:#1f7a45;}
+.admonition.warning,.admonition.caution{border-left-color:var(--sas-gold);}
+.admonition.warning .admonition-title,.admonition.caution .admonition-title{background:#fdf3dc;color:#8a6400;}
+.admonition.danger,.admonition.error{border-left-color:var(--sas-crimson);}
+.admonition.danger .admonition-title,.admonition.error .admonition-title{background:#fbe4e7;color:var(--sas-crimson);}
+.admonition>p:last-child{margin-bottom:0;}
+details.admonition{padding-bottom:0;}
+details.admonition>.admonition-title{cursor:pointer;margin-bottom:0;}
+details[open].admonition>.admonition-title{margin-bottom:8px;}
+img{max-width:100%;height:auto;}
+/* Offline notice + nav */
+.offline-note{background:#fdf3dc;border:1px solid var(--sas-gold);border-left:5px solid var(--sas-gold);
+  padding:10px 16px;font-size:14px;margin:0 0 12px;color:#6b5108;}
+.dl-bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px;}
+.dl-btn{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;padding:9px 16px;border:1px solid var(--sas-navy);background:#fff;
+  color:var(--sas-navy);cursor:pointer;text-decoration:none;display:inline-block;line-height:1;}
+.dl-btn:hover{background:var(--sas-navy);color:#fff;border-bottom-color:var(--sas-navy);}
+.dl-btn.primary{background:var(--sas-crimson);border-color:var(--sas-crimson);color:#fff;}
+.dl-btn.primary:hover{background:#a30d26;border-color:#a30d26;}
+.pagenav{display:flex;justify-content:space-between;gap:12px;margin:36px 0 0;
+  border-top:2px solid #e3e6ef;padding-top:18px;flex-wrap:wrap;}
+.pagenav a{flex:1;min-width:160px;border:1px solid #d7dae6;padding:10px 14px;
+  text-decoration:none;border-bottom:1px solid #d7dae6;color:var(--sas-navy);
+  font-size:14px;background:#fff;}
+.pagenav a:hover{border-color:var(--sas-navy);}
+.pagenav .lbl{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;
+  color:#999;margin-bottom:2px;}
+.pagenav .next{text-align:right;}
+footer.sas{background:var(--sas-navy);color:#c7cde4;padding:16px 40px;
+  font-size:12px;letter-spacing:.04em;text-align:center;border-top:3px solid var(--sas-gold);}
+footer.sas b{color:var(--sas-gold);}
+@media(max-width:640px){.banner,.content,footer.sas{padding-left:20px;padding-right:20px;}}
+@media print{body{background:#fff;}.wrap{box-shadow:none;max-width:100%;}.copy-btn{display:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="banner">
+    <span class="sas-logo-box">SHANGHAI<br>AMERICAN<br>SCHOOL<span class="sas-logo-sub">PX</span></span>
+    <span class="course">Advanced Physical<br><b>Computing</b> · 2026&ndash;27</span>
+  </header>
+  <main class="content">
+    <div class="offline-note">Offline copy for download. The live version with search lives on the course GitHub site.</div>
+    <div class="dl-bar">
+      <button class="dl-btn primary" onclick="downloadThisLesson()">&#8681; Download this lesson</button>
+      <a class="dl-btn" href="APC-Semester1-Offline.zip" download>&#8681; Download whole course (.zip)</a>
+    </div>
+    <h1 id="lesson-04-arduino-sensors-actuators">Lesson 04 — Arduino: Sensors &amp; Actuators</h1>
+<blockquote>
+<p>Measure the real world (distance, temperature &amp; humidity), show it on an LCD, and move things (servos, motors) — the building blocks of last year's parking sensor and auto-gate, and of your Lesson 5 project.</p>
+</blockquote>
+<p><strong>Platform:</strong> Arduino
+<strong>Estimated time:</strong> ~120 min hands-on
+<strong>Prerequisites:</strong> <a href="lesson-03-arduino-analog.html">Lesson 3</a> — <code>analogRead</code>, PWM, Serial Monitor, <code>map()</code></p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<ul>
+<li>Wire and read an HC-SR04 ultrasonic distance sensor, and convert echo time to centimetres.</li>
+<li>Read temperature <strong>and</strong> humidity from a DHT22 using a library.</li>
+<li>Print live readings on a 1602 I2C LCD — output a person can read without a laptop.</li>
+<li>Sweep an SG90 servo to a chosen angle with the <code>Servo</code> library.</li>
+<li>Explain why DC motors need external power and a driver board (L298N) — and never wire one straight to a pin.</li>
+</ul>
+<h2 id="todays-plan-120-min">Today's plan (~120 min)</h2>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Part</th>
+<th>What you're doing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~25 min</td>
+<td>A</td>
+<td>Ultrasonic distance (HC-SR04)</td>
+</tr>
+<tr>
+<td>~20 min</td>
+<td>B</td>
+<td>Temperature &amp; humidity (DHT22)</td>
+</tr>
+<tr>
+<td>~20 min</td>
+<td>C</td>
+<td>The I2C LCD: readings without a laptop</td>
+</tr>
+<tr>
+<td>~40 min</td>
+<td>D</td>
+<td><strong>Core build:</strong> distance display with proximity beeper</td>
+</tr>
+<tr>
+<td>~15 min</td>
+<td>—</td>
+<td>Check-out + extensions (servo gate, L298N fan demo)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-youll-need">What you'll need</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arduino + USB + breadboard</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>HC-SR04 ultrasonic sensor</td>
+<td>1</td>
+<td>4 pins: VCC, Trig, Echo, GND</td>
+</tr>
+<tr>
+<td>DHT22 temperature/humidity sensor</td>
+<td>1</td>
+<td>3-pin module</td>
+</tr>
+<tr>
+<td>1602 LCD with I2C backpack</td>
+<td>1</td>
+<td>Address 0x27 (or 0x3F)</td>
+</tr>
+<tr>
+<td>Passive buzzer</td>
+<td>1</td>
+<td>Plays tones via <code>tone()</code></td>
+</tr>
+<tr>
+<td>Micro servo (SG90)</td>
+<td>1</td>
+<td>For the extension</td>
+</tr>
+<tr>
+<td>Jumper wires</td>
+<td>~12</td>
+<td></td>
+</tr>
+<tr>
+<td><em>(Extension)</em> DC motor/fan + L298N driver + battery pack</td>
+<td>1</td>
+<td>Teacher demo station</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Software:</strong> Arduino IDE + two libraries (Part B/C tell you which).</p>
+<hr />
+<h2 id="part-a-ultrasonic-distance-hc-sr04-25-min">Part A — Ultrasonic distance (HC-SR04) (~25 min)</h2>
+<p>The HC-SR04 works like a bat: it chirps (ultrasound), listens for the echo, and the round-trip <strong>time</strong> gives the distance: <strong>distance (cm) = duration × 0.034 / 2</strong> (sound travels ~340 m/s, and the ping goes there <em>and</em> back).</p>
+<h3 id="wiring">Wiring</h3>
+<p><strong>Unplug USB first.</strong></p>
+<table>
+<thead>
+<tr>
+<th>HC-SR04 pin</th>
+<th>To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCC</td>
+<td>Arduino <strong>5V</strong></td>
+</tr>
+<tr>
+<td>Trig</td>
+<td>Arduino <strong>pin 9</strong></td>
+</tr>
+<tr>
+<td>Echo</td>
+<td>Arduino <strong>pin 10</strong></td>
+</tr>
+<tr>
+<td>GND</td>
+<td>Arduino <strong>GND</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-sketch">The sketch</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">trigPin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">echoPin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">trigPin</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">echoPin</span><span class="p">,</span><span class="w"> </span><span class="n">INPUT</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Send a 10 microsecond chirp</span>
+<span class="w">  </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">trigPin</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">delayMicroseconds</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">trigPin</span><span class="p">,</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">delayMicroseconds</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">trigPin</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="c1">// Time the echo, convert to cm</span>
+<span class="w">  </span><span class="kt">long</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pulseIn</span><span class="p">(</span><span class="n">echoPin</span><span class="p">,</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="kt">long</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.034</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Distance: &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">distance</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot; cm&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<h3 id="checkpoint-a">✅ Checkpoint A</h3>
+<p>Hold a book flat in front of the sensor. Verify readings at roughly <strong>10 cm, 30 cm, 50 cm</strong> against a ruler.</p>
+<div class="admonition warning">
+<p class="admonition-title">Readings of 0 or absurdly huge?</p>
+<p>The echo never came back: target too close (&lt;2 cm), too far (&gt;4 m), or angled so the sound bounced away. Aim at something flat and face-on. Soft things (hoodies!) absorb sound.</p>
+</div>
+<hr />
+<h2 id="part-b-temperature-humidity-dht22-20-min">Part B — Temperature &amp; humidity (DHT22) (~20 min)</h2>
+<p>The DHT22 measures temperature <em>and</em> humidity and sends both digitally on one wire — too complex to decode by hand, so we use a <strong>library</strong> (your first).</p>
+<p><strong>Install:</strong> Sketch → Include Library → Manage Libraries → search <strong>"DHT sensor library"</strong> (Adafruit) → Install (accept the companion "Adafruit Unified Sensor" when offered).</p>
+<h3 id="wiring_1">Wiring</h3>
+<table>
+<thead>
+<tr>
+<th>DHT22 pin</th>
+<th>To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCC (+)</td>
+<td>Arduino <strong>5V</strong></td>
+</tr>
+<tr>
+<td>Data</td>
+<td>Arduino <strong>pin 2</strong></td>
+</tr>
+<tr>
+<td>GND (−)</td>
+<td>Arduino <strong>GND</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-sketch_1">The sketch</h3>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;DHT.h&gt;</span><span class="cp"></span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">DHT_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">DHT</span><span class="w"> </span><span class="nf">dht</span><span class="p">(</span><span class="n">DHT_PIN</span><span class="p">,</span><span class="w"> </span><span class="n">DHT22</span><span class="p">);</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">dht</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">tempC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dht</span><span class="p">.</span><span class="n">readTemperature</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">humidity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dht</span><span class="p">.</span><span class="n">readHumidity</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isnan</span><span class="p">(</span><span class="n">tempC</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">isnan</span><span class="p">(</span><span class="n">humidity</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Read failed - check wiring&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">tempC</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot; C   &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">humidity</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot; %&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span><span class="w">   </span><span class="c1">// DHT22 needs ~2 s between reads</span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<h3 id="checkpoint-b">✅ Checkpoint B</h3>
+<p>Read room temperature, then breathe on the sensor — watch humidity jump and temperature climb. Notice the DHT22 refuses to be rushed: one reading every 2 seconds is its speed limit.</p>
+<hr />
+<h2 id="part-c-the-i2c-lcd-20-min">Part C — The I2C LCD (~20 min)</h2>
+<p>The Serial Monitor needs a laptop. The <strong>1602 LCD</strong> (16 characters × 2 rows) makes your device readable on its own — and it connects over <strong>I2C</strong>, so it needs just 2 signal wires.</p>
+<p><strong>Install:</strong> Library Manager → search <strong>"LiquidCrystal I2C"</strong> (Frank de Brabander) → Install.</p>
+<h3 id="wiring_2">Wiring</h3>
+<table>
+<thead>
+<tr>
+<th>LCD pin</th>
+<th>To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCC</td>
+<td>Arduino <strong>5V</strong></td>
+</tr>
+<tr>
+<td>GND</td>
+<td>Arduino <strong>GND</strong></td>
+</tr>
+<tr>
+<td>SDA</td>
+<td>Arduino <strong>A4</strong></td>
+</tr>
+<tr>
+<td>SCL</td>
+<td>Arduino <strong>A5</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-sketch_2">The sketch</h3>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Wire.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;LiquidCrystal_I2C.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Address 0x27, 16 columns, 2 rows. If blank, try 0x3F.</span>
+<span class="n">LiquidCrystal_I2C</span><span class="w"> </span><span class="nf">lcd</span><span class="p">(</span><span class="mh">0x27</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">init</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">backlight</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">setCursor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">      </span><span class="c1">// column 0, row 0</span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Hello APC!&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">setCursor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">      </span><span class="c1">// column 0, row 1</span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;LCD is alive&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<div class="admonition warning">
+<p class="admonition-title">Backlight on but no text?</p>
+<p>Two classic fixes: change <code>0x27</code> to <code>0x3F</code> (two common addresses), or adjust the <strong>contrast potentiometer</strong> on the back of the I2C backpack with a small screwdriver.</p>
+</div>
+<h3 id="checkpoint-c">✅ Checkpoint C</h3>
+<p>Your text on the LCD, then: make row 2 show a number that counts up once per second (<code>lcd.print(millis() / 1000)</code> — but you'll need <code>lcd.setCursor</code> in <code>loop()</code> and a <code>delay</code>).</p>
+<hr />
+<h2 id="part-d-core-build-distance-display-proximity-beeper-40-min">Part D — Core build: distance display + proximity beeper (~40 min)</h2>
+<p>Combine A + C, plus the passive buzzer: <strong>LCD shows live distance; the buzzer beeps when something gets too close.</strong> This is the heart of last year's parking-sensor project — this year you're building it yourself.</p>
+<p><strong>Add the buzzer:</strong> positive (+) leg → <strong>pin 8</strong>, negative (−) leg → <strong>GND</strong>.</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Wire.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;LiquidCrystal_I2C.h&gt;</span><span class="cp"></span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">trigPin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">echoPin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">buzzerPin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ALERT_CM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w">          </span><span class="c1">// beep when closer than this</span>
+
+<span class="n">LiquidCrystal_I2C</span><span class="w"> </span><span class="nf">lcd</span><span class="p">(</span><span class="mh">0x27</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+
+<span class="kt">long</span><span class="w"> </span><span class="nf">readDistanceCm</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">trigPin</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">delayMicroseconds</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">trigPin</span><span class="p">,</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">delayMicroseconds</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">trigPin</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="kt">long</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pulseIn</span><span class="p">(</span><span class="n">echoPin</span><span class="p">,</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.034</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">trigPin</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">echoPin</span><span class="p">,</span><span class="w"> </span><span class="n">INPUT</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">buzzerPin</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">init</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">backlight</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Distance Sensor&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">1500</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">long</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readDistanceCm</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">setCursor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Dist: &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">distance</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot; cm   &quot;</span><span class="p">);</span><span class="w">            </span><span class="c1">// trailing spaces erase old digits</span>
+
+<span class="w">  </span><span class="n">lcd</span><span class="p">.</span><span class="n">setCursor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">distance</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ALERT_CM</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">lcd</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;!! TOO CLOSE !! &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">tone</span><span class="p">(</span><span class="n">buzzerPin</span><span class="p">,</span><span class="w"> </span><span class="mi">880</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w">    </span><span class="c1">// 880 Hz beep, 100 ms</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">lcd</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Range clear     &quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">distance</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">150</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<h3 id="check-your-work">✅ Check your work</h3>
+<p><strong>Success looks like:</strong> distance updates live on the LCD; walk your hand in and at 15 cm the second row flips and the buzzer chirps; pull away and it clears.</p>
+<div class="admonition warning">
+<p class="admonition-title">Buzzer silent?</p>
+<p><code>tone()</code> needs a <strong>passive</strong> buzzer (the open-backed one in your kit). Also check the + leg is on pin 8 — buzzers have polarity.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">LCD shows stale digits (like '9 cm' becoming '99 cm')?</p>
+<p><code>lcd.print</code> doesn't erase. Print trailing spaces after the value — see the sketch — or <code>lcd.clear()</code> sparingly (it flickers).</p>
+</div>
+<hr />
+<h2 id="extension-challenge">Extension / challenge</h2>
+<ol>
+<li><strong>Faster = closer</strong> — make the beeps repeat faster as distance shrinks (map distance → gap between <code>tone()</code> calls). Now it's a real parking sensor.</li>
+<li><strong>Auto gate</strong> — add the SG90 servo (signal → <strong>pin 6</strong>, red → 5V, brown → GND). First run <a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/servo_sweep/servo_sweep.ino"><code>servo_sweep/servo_sweep.ino</code></a> to see the <code>Servo</code> library move it to 0°/90°/180°. Then the build: when something stays closer than 30 cm, the "gate" opens (90°); when clear for 5 s it closes. Last year's class built exactly this — after you've tried, compare with <a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/auto_gate/auto_gate.ino"><code>auto_gate/auto_gate.ino</code></a>, which shows a proper state machine.</li>
+<li><strong>Climate station</strong> — swap the ultrasonic for the DHT22: LCD row 1 = temperature, row 2 = humidity.</li>
+<li><strong>L298N fan (demo station)</strong> — DC motors drink more current than a pin can supply and kick back voltage spikes, so they get <strong>external battery power</strong> and a <strong>driver board</strong>. Try <a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/l298n_fan/l298n_fan.ino"><code>l298n_fan/l298n_fan.ino</code></a>: speed via PWM on ENA (pin 5), direction via IN1/IN2 (pins 7/4).</li>
+</ol>
+<h2 id="code">Code</h2>
+<p>All sketches in <a href="https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-04"><code>code/lesson-04/</code></a>:</p>
+<ul>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/ultrasonic_read/ultrasonic_read.ino"><code>ultrasonic_read/ultrasonic_read.ino</code></a> — Part A</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/dht22_read/dht22_read.ino"><code>dht22_read/dht22_read.ino</code></a> — Part B</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/lcd_hello/lcd_hello.ino"><code>lcd_hello/lcd_hello.ino</code></a> — Part C</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/distance_display/distance_display.ino"><code>distance_display/distance_display.ino</code></a> — Part D core build</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/servo_sweep/servo_sweep.ino"><code>servo_sweep/servo_sweep.ino</code></a> + <a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/auto_gate/auto_gate.ino"><code>auto_gate/auto_gate.ino</code></a> — Extension 2</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/l298n_fan/l298n_fan.ino"><code>l298n_fan/l298n_fan.ino</code></a> — Extension 4 (demo)</li>
+</ul>
+<p><strong>Next up:</strong> <a href="lesson-05-arduino-project.html">Lesson 5 — Arduino mini-project</a></p>
+    <nav class="pagenav"><a class="prev" href="lesson-03-arduino-analog.html"><span class="lbl">&larr; Previous</span>3. Analog, PWM &amp; Serial</a><a class="next" href="lesson-05-arduino-project.html"><span class="lbl">Next &rarr;</span>5. Arduino Mini-project</a></nav>
+  </main>
+  <footer class="sas">Shanghai American School &middot; Puxi High School &middot; <b>Advanced Physical Computing</b> &middot; Semester 1, 2026&ndash;27</footer>
+</div>
+<script>
+// Copy buttons (idempotent — safe if markup already contains one)
+document.querySelectorAll('pre').forEach(function(pre){
+  if(pre.querySelector('.copy-btn'))return;
+  var b=document.createElement('button');b.className='copy-btn';b.textContent='Copy';
+  b.addEventListener('click',function(){
+    var code=pre.querySelector('code')||pre;
+    navigator.clipboard.writeText(code.innerText).then(function(){b.textContent='Copied';
+      setTimeout(function(){b.textContent='Copy';},1500);});
+  });
+  pre.appendChild(b);
+});
+// Save this single self-contained page to the student's laptop
+function downloadThisLesson(){
+  var html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(location.pathname.split('/').pop()||'lesson.html');
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6. Linux &amp; Remote Access — Advanced Physical Computing</title>
+<style>
+:root{
+  --sas-navy:#1B2A5E; --sas-crimson:#C8102E; --sas-gold:#F0B432;
+  --sas-charcoal:#2C2C2C; --sas-gray:#F4F4F4; --sas-teal:#005F73; --sas-white:#fff;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-charcoal);
+  background:var(--sas-gray);line-height:1.7;font-size:17px;}
+.wrap{max-width:860px;margin:0 auto;background:var(--sas-white);
+  min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,.06);}
+/* Banner */
+.banner{background:var(--sas-navy);border-bottom:3px solid var(--sas-gold);
+  padding:18px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.sas-logo-box{display:inline-flex;flex-direction:column;border:2px solid #fff;
+  padding:6px 12px;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.22em;text-transform:uppercase;line-height:1.25;color:#fff;position:relative;}
+.sas-logo-sub{position:absolute;bottom:-2px;right:-2px;border:2px solid #fff;
+  padding:1px 6px;font-size:8px;letter-spacing:.18em;background:var(--sas-navy);line-height:1.5;}
+.banner .course{color:#fff;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;
+  letter-spacing:.12em;font-size:15px;text-align:right;opacity:.92;}
+.banner .course b{color:var(--sas-gold);font-weight:700;}
+/* Content */
+.content{padding:34px 40px 60px;}
+.content h1{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:34px;letter-spacing:.02em;line-height:1.12;
+  border-top:3px solid var(--sas-gold);padding-top:18px;margin:.2em 0 .6em;}
+.content h2{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:24px;letter-spacing:.03em;margin:1.7em 0 .5em;
+  padding-bottom:6px;border-bottom:2px solid #e3e6ef;}
+.content h3{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-teal);font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;font-size:15px;margin:1.5em 0 .4em;}
+.content h4{color:var(--sas-navy);font-size:16px;margin:1.3em 0 .3em;}
+.content a{color:var(--sas-crimson);text-decoration:none;border-bottom:1px solid rgba(200,16,46,.35);}
+.content a:hover{border-bottom-color:var(--sas-crimson);}
+blockquote{margin:1.2em 0;padding:.6em 1.1em;background:var(--sas-gray);
+  border-left:4px solid var(--sas-gold);color:#444;font-style:italic;}
+blockquote p{margin:.3em 0;}
+hr{border:0;border-top:2px solid #e3e6ef;margin:2em 0;}
+/* Tables */
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:15.5px;}
+th{background:var(--sas-navy);color:var(--sas-gold);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;text-align:left;
+  padding:9px 12px;}
+td{padding:8px 12px;border-bottom:1px solid #e7e9f0;vertical-align:top;}
+tr:nth-child(even) td{background:var(--sas-gray);}
+/* Inline + block code */
+code{font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:.9em;background:#eef0f6;color:#22245e;
+  padding:.12em .4em;border-radius:0;}
+pre{position:relative;margin:1.3em 0;}
+.codehilite,pre>code{display:block;background:#1a1a2e;color:#f2f2f2;
+  border-top:3px solid var(--sas-gold);padding:16px 18px;overflow:auto;
+  font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:14px;line-height:1.55;}
+.codehilite code{background:none;color:inherit;padding:0;}
+.codehilite pre{margin:0;}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);
+  color:#fff;border:1px solid rgba(255,255,255,.25);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;
+  cursor:pointer;z-index:2;}
+.copy-btn:hover{background:var(--sas-crimson);border-color:var(--sas-crimson);}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #f8f8f2 }
+.codehilite .c { color: #75715e } /* Comment */
+.codehilite .err { color: #960050; background-color: #1e0010 } /* Error */
+.codehilite .esc { color: #f8f8f2 } /* Escape */
+.codehilite .g { color: #f8f8f2 } /* Generic */
+.codehilite .k { color: #66d9ef } /* Keyword */
+.codehilite .l { color: #ae81ff } /* Literal */
+.codehilite .n { color: #f8f8f2 } /* Name */
+.codehilite .o { color: #f92672 } /* Operator */
+.codehilite .x { color: #f8f8f2 } /* Other */
+.codehilite .p { color: #f8f8f2 } /* Punctuation */
+.codehilite .ch { color: #75715e } /* Comment.Hashbang */
+.codehilite .cm { color: #75715e } /* Comment.Multiline */
+.codehilite .cp { color: #75715e } /* Comment.Preproc */
+.codehilite .cpf { color: #75715e } /* Comment.PreprocFile */
+.codehilite .c1 { color: #75715e } /* Comment.Single */
+.codehilite .cs { color: #75715e } /* Comment.Special */
+.codehilite .gd { color: #f92672 } /* Generic.Deleted */
+.codehilite .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.codehilite .gr { color: #f8f8f2 } /* Generic.Error */
+.codehilite .gh { color: #f8f8f2 } /* Generic.Heading */
+.codehilite .gi { color: #a6e22e } /* Generic.Inserted */
+.codehilite .go { color: #66d9ef } /* Generic.Output */
+.codehilite .gp { color: #f92672; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #75715e } /* Generic.Subheading */
+.codehilite .gt { color: #f8f8f2 } /* Generic.Traceback */
+.codehilite .kc { color: #66d9ef } /* Keyword.Constant */
+.codehilite .kd { color: #66d9ef } /* Keyword.Declaration */
+.codehilite .kn { color: #f92672 } /* Keyword.Namespace */
+.codehilite .kp { color: #66d9ef } /* Keyword.Pseudo */
+.codehilite .kr { color: #66d9ef } /* Keyword.Reserved */
+.codehilite .kt { color: #66d9ef } /* Keyword.Type */
+.codehilite .ld { color: #e6db74 } /* Literal.Date */
+.codehilite .m { color: #ae81ff } /* Literal.Number */
+.codehilite .s { color: #e6db74 } /* Literal.String */
+.codehilite .na { color: #a6e22e } /* Name.Attribute */
+.codehilite .nb { color: #f8f8f2 } /* Name.Builtin */
+.codehilite .nc { color: #a6e22e } /* Name.Class */
+.codehilite .no { color: #66d9ef } /* Name.Constant */
+.codehilite .nd { color: #a6e22e } /* Name.Decorator */
+.codehilite .ni { color: #f8f8f2 } /* Name.Entity */
+.codehilite .ne { color: #a6e22e } /* Name.Exception */
+.codehilite .nf { color: #a6e22e } /* Name.Function */
+.codehilite .nl { color: #f8f8f2 } /* Name.Label */
+.codehilite .nn { color: #f8f8f2 } /* Name.Namespace */
+.codehilite .nx { color: #a6e22e } /* Name.Other */
+.codehilite .py { color: #f8f8f2 } /* Name.Property */
+.codehilite .nt { color: #f92672 } /* Name.Tag */
+.codehilite .nv { color: #f8f8f2 } /* Name.Variable */
+.codehilite .ow { color: #f92672 } /* Operator.Word */
+.codehilite .w { color: #f8f8f2 } /* Text.Whitespace */
+.codehilite .mb { color: #ae81ff } /* Literal.Number.Bin */
+.codehilite .mf { color: #ae81ff } /* Literal.Number.Float */
+.codehilite .mh { color: #ae81ff } /* Literal.Number.Hex */
+.codehilite .mi { color: #ae81ff } /* Literal.Number.Integer */
+.codehilite .mo { color: #ae81ff } /* Literal.Number.Oct */
+.codehilite .sa { color: #e6db74 } /* Literal.String.Affix */
+.codehilite .sb { color: #e6db74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #e6db74 } /* Literal.String.Char */
+.codehilite .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #e6db74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #e6db74 } /* Literal.String.Double */
+.codehilite .se { color: #ae81ff } /* Literal.String.Escape */
+.codehilite .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #e6db74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #e6db74 } /* Literal.String.Other */
+.codehilite .sr { color: #e6db74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #e6db74 } /* Literal.String.Single */
+.codehilite .ss { color: #e6db74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #a6e22e } /* Name.Function.Magic */
+.codehilite .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.codehilite .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.codehilite .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.codehilite .il { color: #ae81ff } /* Literal.Number.Integer.Long */
+/* Admonitions */
+.admonition{margin:1.4em 0;border:1px solid #e0e3ec;border-left-width:5px;
+  background:#fafbfe;padding:0 16px 12px;}
+.admonition-title{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;font-size:13px;margin:0 -16px 8px;padding:9px 16px;
+  background:#eef1f8;color:var(--sas-navy);}
+.admonition.note{border-left-color:var(--sas-teal);}
+.admonition.note .admonition-title{background:#e4f0f2;color:var(--sas-teal);}
+.admonition.tip,.admonition.hint{border-left-color:#1f9d55;}
+.admonition.tip .admonition-title,.admonition.hint .admonition-title{background:#e4f4ea;color:#1f7a45;}
+.admonition.warning,.admonition.caution{border-left-color:var(--sas-gold);}
+.admonition.warning .admonition-title,.admonition.caution .admonition-title{background:#fdf3dc;color:#8a6400;}
+.admonition.danger,.admonition.error{border-left-color:var(--sas-crimson);}
+.admonition.danger .admonition-title,.admonition.error .admonition-title{background:#fbe4e7;color:var(--sas-crimson);}
+.admonition>p:last-child{margin-bottom:0;}
+details.admonition{padding-bottom:0;}
+details.admonition>.admonition-title{cursor:pointer;margin-bottom:0;}
+details[open].admonition>.admonition-title{margin-bottom:8px;}
+img{max-width:100%;height:auto;}
+/* Offline notice + nav */
+.offline-note{background:#fdf3dc;border:1px solid var(--sas-gold);border-left:5px solid var(--sas-gold);
+  padding:10px 16px;font-size:14px;margin:0 0 12px;color:#6b5108;}
+.dl-bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px;}
+.dl-btn{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;padding:9px 16px;border:1px solid var(--sas-navy);background:#fff;
+  color:var(--sas-navy);cursor:pointer;text-decoration:none;display:inline-block;line-height:1;}
+.dl-btn:hover{background:var(--sas-navy);color:#fff;border-bottom-color:var(--sas-navy);}
+.dl-btn.primary{background:var(--sas-crimson);border-color:var(--sas-crimson);color:#fff;}
+.dl-btn.primary:hover{background:#a30d26;border-color:#a30d26;}
+.pagenav{display:flex;justify-content:space-between;gap:12px;margin:36px 0 0;
+  border-top:2px solid #e3e6ef;padding-top:18px;flex-wrap:wrap;}
+.pagenav a{flex:1;min-width:160px;border:1px solid #d7dae6;padding:10px 14px;
+  text-decoration:none;border-bottom:1px solid #d7dae6;color:var(--sas-navy);
+  font-size:14px;background:#fff;}
+.pagenav a:hover{border-color:var(--sas-navy);}
+.pagenav .lbl{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;
+  color:#999;margin-bottom:2px;}
+.pagenav .next{text-align:right;}
+footer.sas{background:var(--sas-navy);color:#c7cde4;padding:16px 40px;
+  font-size:12px;letter-spacing:.04em;text-align:center;border-top:3px solid var(--sas-gold);}
+footer.sas b{color:var(--sas-gold);}
+@media(max-width:640px){.banner,.content,footer.sas{padding-left:20px;padding-right:20px;}}
+@media print{body{background:#fff;}.wrap{box-shadow:none;max-width:100%;}.copy-btn{display:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="banner">
+    <span class="sas-logo-box">SHANGHAI<br>AMERICAN<br>SCHOOL<span class="sas-logo-sub">PX</span></span>
+    <span class="course">Advanced Physical<br><b>Computing</b> · 2026&ndash;27</span>
+  </header>
+  <main class="content">
+    <div class="offline-note">Offline copy for download. The live version with search lives on the course GitHub site.</div>
+    <div class="dl-bar">
+      <button class="dl-btn primary" onclick="downloadThisLesson()">&#8681; Download this lesson</button>
+      <a class="dl-btn" href="APC-Semester1-Offline.zip" download>&#8681; Download whole course (.zip)</a>
+    </div>
+    <h1 id="lesson-06-raspberry-pi-5-linux-remote-access">Lesson 06 — Raspberry Pi 5: Linux &amp; Remote Access</h1>
+<blockquote>
+<p>Meet a computer the size of a deck of cards: the Linux desktop, the terminal, and (optionally) how to control your Pi from another machine.</p>
+</blockquote>
+<p><strong>Platform:</strong> Raspberry Pi 5
+<strong>Estimated time:</strong> ~120 min hands-on
+<strong>Prerequisites:</strong> <a href="lesson-05-arduino-project.html">Lesson 5</a> — none of the Arduino skills are needed today, but the contrast matters</p>
+<h2 id="the-big-idea">The big idea</h2>
+<p>The Arduino is a <strong>microcontroller</strong>: it runs one sketch, forever, the instant power arrives. The Raspberry Pi 5 is a <strong>full computer</strong>: it boots an operating system (Linux), runs many programs at once, has files, users, a desktop, and a network. This changes what we can build — and how we work.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Arduino</th>
+<th>Raspberry Pi 5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runs</td>
+<td>One sketch</td>
+<td>A whole OS (Linux) + your programs</td>
+</tr>
+<tr>
+<td>Code</td>
+<td>C++, compiled on the Mac, uploaded</td>
+<td>Python, written &amp; run <strong>on the Pi itself</strong></td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>None (just the sketch)</td>
+<td>microSD card — real files</td>
+</tr>
+<tr>
+<td>Network</td>
+<td>No</td>
+<td>Yes — Wi-Fi, browser, remote access</td>
+</tr>
+<tr>
+<td>Turn off by</td>
+<td>Pulling the plug</td>
+<td><strong>Shutting down properly</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="learning-objectives">Learning objectives</h2>
+<ul>
+<li>Boot the Pi, tour the desktop, and shut it down <em>properly</em>.</li>
+<li>Navigate and manage files from the <strong>terminal</strong>: <code>pwd</code>, <code>ls</code>, <code>cd</code>, <code>mkdir</code>, <code>cp</code>, <code>mv</code>, <code>rm</code>.</li>
+<li>Install software with <code>apt</code> and clone the course repo with <code>git</code>.</li>
+<li>Describe the three remote-access options (SSH, VNC, Raspberry Pi Connect) and when each is worth using — <strong>all optional</strong>.</li>
+</ul>
+<h2 id="todays-plan-120-min">Today's plan (~120 min)</h2>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Part</th>
+<th>What you're doing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~20 min</td>
+<td>A</td>
+<td>Boot, desktop tour, settings, proper shutdown</td>
+</tr>
+<tr>
+<td>~40 min</td>
+<td>B</td>
+<td><strong>Core skill:</strong> terminal essentials + scavenger hunt</td>
+</tr>
+<tr>
+<td>~25 min</td>
+<td>C</td>
+<td>Install software; clone the course repo onto your Pi</td>
+</tr>
+<tr>
+<td>~25 min</td>
+<td>D</td>
+<td>Remote access sampler (optional skills)</td>
+</tr>
+<tr>
+<td>~10 min</td>
+<td>—</td>
+<td>Check-out + shutdown</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-youll-need">What you'll need</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raspberry Pi 5 (with imaged microSD)</td>
+<td>1</td>
+<td>Cards are pre-imaged for the class</td>
+</tr>
+<tr>
+<td>Screen + HDMI cable, keyboard, mouse</td>
+<td>1 set</td>
+<td>Provided at your bench</td>
+</tr>
+<tr>
+<td>Pi power supply (USB-C, 27 W)</td>
+<td>1</td>
+<td>Use the official one — not a phone charger</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="part-a-boot-tour-shutdown-20-min">Part A — Boot, tour, shutdown (~20 min)</h2>
+<ol>
+<li>Connect HDMI, keyboard, mouse <strong>first</strong>, power <strong>last</strong> — the Pi boots the moment power arrives.</li>
+<li>Watch it boot into the Raspberry Pi OS desktop. Explore: the menu (top-left), the file manager, the browser, <strong>Thonny</strong> (menu → Programming — that's Lesson 7's home).</li>
+<li>Open the terminal (the black icon in the taskbar). Leave it open — it's the star of Part B.</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Never just pull the plug</p>
+<p>The Pi writes to its microSD card constantly. Cutting power mid-write can corrupt the card — that's a re-image and lost work. Always <strong>menu → Shutdown</strong>, wait for the green LED to stop flashing, <em>then</em> unplug.</p>
+</div>
+<hr />
+<h2 id="part-b-core-skill-the-terminal-40-min">Part B — Core skill: the terminal (~40 min)</h2>
+<p>The desktop is fine, but the terminal is <em>faster</em>, works over remote connections, and is how the Whisplay driver gets installed in Lesson 10. Work through these — type them, don't just read them:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">pwd</span>             <span class="c1"># where am I? (print working directory)</span>
+ls              <span class="c1"># what&#39;s here?</span>
+ls -l           <span class="c1"># ...with details (size, date, permissions)</span>
+<span class="nb">cd</span> Documents    <span class="c1"># move into a folder</span>
+<span class="nb">cd</span> ..           <span class="c1"># go up one level</span>
+<span class="nb">cd</span> ~            <span class="c1"># jump home from anywhere</span>
+mkdir apc       <span class="c1"># make a folder</span>
+cp file.txt backup.txt    <span class="c1"># copy</span>
+mv old.txt new.txt        <span class="c1"># move / rename</span>
+rm unwanted.txt           <span class="c1"># delete (NO undo — no trash bin here!)</span>
+</code></pre></div>
+
+<div class="admonition tip">
+<p class="admonition-title">The two keys that make you fast</p>
+<p><strong>Tab</strong> completes names (type <code>cd Doc</code> + Tab). <strong>↑</strong> recalls previous commands. Terminal veterans are just people who press Tab a lot.</p>
+</div>
+<h3 id="checkpoint-b-scavenger-hunt">✅ Checkpoint B — scavenger hunt</h3>
+<p>From your home folder, using <strong>only the terminal</strong>:</p>
+<ol>
+<li>Make a folder <code>apc/lesson-06</code>.</li>
+<li>Inside it, create a file with your name in it: <code>echo "built by YOURNAME" &gt; about.txt</code></li>
+<li>Prove it: <code>cat apc/lesson-06/about.txt</code></li>
+<li>Rename it to <code>signature.txt</code>, then show a teacher <code>ls -l</code> of the folder.</li>
+</ol>
+<hr />
+<h2 id="part-c-install-software-clone-the-repo-25-min">Part C — Install software &amp; clone the repo (~25 min)</h2>
+<p>Linux installs software from the command line with <code>apt</code> (like a command-line app store):</p>
+<div class="codehilite"><pre><span></span><code>sudo apt update          <span class="c1"># refresh the package list</span>
+sudo apt install htop    <span class="c1"># a live system monitor — try it! (q to quit)</span>
+</code></pre></div>
+
+<p><code>sudo</code> means "do this as administrator" — the Pi will ask for your password.</p>
+<p>Now put the course code on your Pi (this is Lesson 1's git skill, for real this time):</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> ~/apc
+git clone https://github.com/dominicmooney007/APC_2026-27.git
+ls APC_2026-27/code      <span class="c1"># there&#39;s every lesson&#39;s code</span>
+</code></pre></div>
+
+<h3 id="checkpoint-c">✅ Checkpoint C</h3>
+<p>Run <code>python3 APC_2026-27/code/lesson-01/clone_check.py</code> — the Lesson 1 checkpoint file, now running <em>on the Pi</em>.</p>
+<hr />
+<h2 id="part-d-remote-access-sampler-25-min-optional-skills">Part D — Remote access sampler (~25 min, optional skills)</h2>
+<p>Your bench always has a screen and keyboard — you never <em>need</em> remote access. But three ways exist to drive the Pi from your Mac, and each is a real-world skill:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>You get</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SSH</strong></td>
+<td>The Pi's <em>terminal</em> in a window on your Mac</td>
+<td>Quick commands, feels professional</td>
+</tr>
+<tr>
+<td><strong>VNC</strong></td>
+<td>The Pi's whole <em>desktop</em> in a window</td>
+<td>When you want the GUI remotely</td>
+</tr>
+<tr>
+<td><strong>Raspberry Pi Connect</strong></td>
+<td>Desktop or shell <em>via the browser</em></td>
+<td>Zero setup on the Mac, works anywhere</td>
+</tr>
+</tbody>
+</table>
+<p>Try SSH now (Pi and Mac on the same network):</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># on the Pi, find its address:</span>
+hostname -I
+
+<span class="c1"># on the Mac&#39;s Terminal (use your Pi&#39;s username and address):</span>
+ssh pi@192.168.1.42
+</code></pre></div>
+
+<p>Type <code>exit</code> to leave. VNC and Pi Connect demos at the front bench for anyone curious.</p>
+<div class="admonition note">
+<p class="admonition-title">Optional means optional</p>
+<p>Everything in this course works with the screen and keyboard in front of you. Use remote access if you like it; skip it if you don't.</p>
+</div>
+<hr />
+<h2 id="check-your-work">Check your work</h2>
+<p>You're done today when: you've completed both checkpoints, tried SSH once, and <strong>shut your Pi down properly</strong>.</p>
+<h2 id="extension-challenge">Extension / challenge</h2>
+<ol>
+<li><strong>Command detective</strong> — find out what <code>df -h</code>, <code>uname -a</code>, and <code>vcgencmd measure_temp</code> tell you about your Pi.</li>
+<li><strong>Alias magic</strong> — add <code>alias apc='cd ~/apc/APC_2026-27'</code> to your <code>~/.bashrc</code> and reload with <code>source ~/.bashrc</code>. Now typing <code>apc</code> teleports you to the course repo.</li>
+</ol>
+<h2 id="code">Code</h2>
+<ul>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-06/terminal_scavenger_hunt.md"><code>code/lesson-06/terminal_scavenger_hunt.md</code></a> — the Checkpoint B tasks + a command cheat-sheet to keep.</li>
+</ul>
+<p><strong>Next up:</strong> <a href="lesson-07-pi-gpio.html">Lesson 7 — Raspberry Pi: Python, Thonny &amp; GPIO</a></p>
+    <nav class="pagenav"><a class="prev" href="lesson-05-arduino-project.html"><span class="lbl">&larr; Previous</span>5. Arduino Mini-project</a><a class="next" href="lesson-07-pi-gpio.html"><span class="lbl">Next &rarr;</span>7. Python, Thonny &amp; GPIO</a></nav>
+  </main>
+  <footer class="sas">Shanghai American School &middot; Puxi High School &middot; <b>Advanced Physical Computing</b> &middot; Semester 1, 2026&ndash;27</footer>
+</div>
+<script>
+// Copy buttons (idempotent — safe if markup already contains one)
+document.querySelectorAll('pre').forEach(function(pre){
+  if(pre.querySelector('.copy-btn'))return;
+  var b=document.createElement('button');b.className='copy-btn';b.textContent='Copy';
+  b.addEventListener('click',function(){
+    var code=pre.querySelector('code')||pre;
+    navigator.clipboard.writeText(code.innerText).then(function(){b.textContent='Copied';
+      setTimeout(function(){b.textContent='Copy';},1500);});
+  });
+  pre.appendChild(b);
+});
+// Save this single self-contained page to the student's laptop
+function downloadThisLesson(){
+  var html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(location.pathname.split('/').pop()||'lesson.html');
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+}
+</script>
+</body>
+</html>

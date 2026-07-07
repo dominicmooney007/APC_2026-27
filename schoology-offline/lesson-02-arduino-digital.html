@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2. Board &amp; Digital I/O — Advanced Physical Computing</title>
+<style>
+:root{
+  --sas-navy:#1B2A5E; --sas-crimson:#C8102E; --sas-gold:#F0B432;
+  --sas-charcoal:#2C2C2C; --sas-gray:#F4F4F4; --sas-teal:#005F73; --sas-white:#fff;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-charcoal);
+  background:var(--sas-gray);line-height:1.7;font-size:17px;}
+.wrap{max-width:860px;margin:0 auto;background:var(--sas-white);
+  min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,.06);}
+/* Banner */
+.banner{background:var(--sas-navy);border-bottom:3px solid var(--sas-gold);
+  padding:18px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.sas-logo-box{display:inline-flex;flex-direction:column;border:2px solid #fff;
+  padding:6px 12px;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.22em;text-transform:uppercase;line-height:1.25;color:#fff;position:relative;}
+.sas-logo-sub{position:absolute;bottom:-2px;right:-2px;border:2px solid #fff;
+  padding:1px 6px;font-size:8px;letter-spacing:.18em;background:var(--sas-navy);line-height:1.5;}
+.banner .course{color:#fff;font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;
+  letter-spacing:.12em;font-size:15px;text-align:right;opacity:.92;}
+.banner .course b{color:var(--sas-gold);font-weight:700;}
+/* Content */
+.content{padding:34px 40px 60px;}
+.content h1{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:34px;letter-spacing:.02em;line-height:1.12;
+  border-top:3px solid var(--sas-gold);padding-top:18px;margin:.2em 0 .6em;}
+.content h2{font-family:'Barlow Condensed','Oswald','Arial Narrow',sans-serif;text-transform:uppercase;color:var(--sas-navy);
+  font-weight:700;font-size:24px;letter-spacing:.03em;margin:1.7em 0 .5em;
+  padding-bottom:6px;border-bottom:2px solid #e3e6ef;}
+.content h3{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:var(--sas-teal);font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;font-size:15px;margin:1.5em 0 .4em;}
+.content h4{color:var(--sas-navy);font-size:16px;margin:1.3em 0 .3em;}
+.content a{color:var(--sas-crimson);text-decoration:none;border-bottom:1px solid rgba(200,16,46,.35);}
+.content a:hover{border-bottom-color:var(--sas-crimson);}
+blockquote{margin:1.2em 0;padding:.6em 1.1em;background:var(--sas-gray);
+  border-left:4px solid var(--sas-gold);color:#444;font-style:italic;}
+blockquote p{margin:.3em 0;}
+hr{border:0;border-top:2px solid #e3e6ef;margin:2em 0;}
+/* Tables */
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:15.5px;}
+th{background:var(--sas-navy);color:var(--sas-gold);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;text-align:left;
+  padding:9px 12px;}
+td{padding:8px 12px;border-bottom:1px solid #e7e9f0;vertical-align:top;}
+tr:nth-child(even) td{background:var(--sas-gray);}
+/* Inline + block code */
+code{font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:.9em;background:#eef0f6;color:#22245e;
+  padding:.12em .4em;border-radius:0;}
+pre{position:relative;margin:1.3em 0;}
+.codehilite,pre>code{display:block;background:#1a1a2e;color:#f2f2f2;
+  border-top:3px solid var(--sas-gold);padding:16px 18px;overflow:auto;
+  font-family:'SF Mono',Menlo,Consolas,'Roboto Mono','Liberation Mono',monospace;font-size:14px;line-height:1.55;}
+.codehilite code{background:none;color:inherit;padding:0;}
+.codehilite pre{margin:0;}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);
+  color:#fff;border:1px solid rgba(255,255,255,.25);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;
+  cursor:pointer;z-index:2;}
+.copy-btn:hover{background:var(--sas-crimson);border-color:var(--sas-crimson);}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #f8f8f2 }
+.codehilite .c { color: #75715e } /* Comment */
+.codehilite .err { color: #960050; background-color: #1e0010 } /* Error */
+.codehilite .esc { color: #f8f8f2 } /* Escape */
+.codehilite .g { color: #f8f8f2 } /* Generic */
+.codehilite .k { color: #66d9ef } /* Keyword */
+.codehilite .l { color: #ae81ff } /* Literal */
+.codehilite .n { color: #f8f8f2 } /* Name */
+.codehilite .o { color: #f92672 } /* Operator */
+.codehilite .x { color: #f8f8f2 } /* Other */
+.codehilite .p { color: #f8f8f2 } /* Punctuation */
+.codehilite .ch { color: #75715e } /* Comment.Hashbang */
+.codehilite .cm { color: #75715e } /* Comment.Multiline */
+.codehilite .cp { color: #75715e } /* Comment.Preproc */
+.codehilite .cpf { color: #75715e } /* Comment.PreprocFile */
+.codehilite .c1 { color: #75715e } /* Comment.Single */
+.codehilite .cs { color: #75715e } /* Comment.Special */
+.codehilite .gd { color: #f92672 } /* Generic.Deleted */
+.codehilite .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.codehilite .gr { color: #f8f8f2 } /* Generic.Error */
+.codehilite .gh { color: #f8f8f2 } /* Generic.Heading */
+.codehilite .gi { color: #a6e22e } /* Generic.Inserted */
+.codehilite .go { color: #66d9ef } /* Generic.Output */
+.codehilite .gp { color: #f92672; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #75715e } /* Generic.Subheading */
+.codehilite .gt { color: #f8f8f2 } /* Generic.Traceback */
+.codehilite .kc { color: #66d9ef } /* Keyword.Constant */
+.codehilite .kd { color: #66d9ef } /* Keyword.Declaration */
+.codehilite .kn { color: #f92672 } /* Keyword.Namespace */
+.codehilite .kp { color: #66d9ef } /* Keyword.Pseudo */
+.codehilite .kr { color: #66d9ef } /* Keyword.Reserved */
+.codehilite .kt { color: #66d9ef } /* Keyword.Type */
+.codehilite .ld { color: #e6db74 } /* Literal.Date */
+.codehilite .m { color: #ae81ff } /* Literal.Number */
+.codehilite .s { color: #e6db74 } /* Literal.String */
+.codehilite .na { color: #a6e22e } /* Name.Attribute */
+.codehilite .nb { color: #f8f8f2 } /* Name.Builtin */
+.codehilite .nc { color: #a6e22e } /* Name.Class */
+.codehilite .no { color: #66d9ef } /* Name.Constant */
+.codehilite .nd { color: #a6e22e } /* Name.Decorator */
+.codehilite .ni { color: #f8f8f2 } /* Name.Entity */
+.codehilite .ne { color: #a6e22e } /* Name.Exception */
+.codehilite .nf { color: #a6e22e } /* Name.Function */
+.codehilite .nl { color: #f8f8f2 } /* Name.Label */
+.codehilite .nn { color: #f8f8f2 } /* Name.Namespace */
+.codehilite .nx { color: #a6e22e } /* Name.Other */
+.codehilite .py { color: #f8f8f2 } /* Name.Property */
+.codehilite .nt { color: #f92672 } /* Name.Tag */
+.codehilite .nv { color: #f8f8f2 } /* Name.Variable */
+.codehilite .ow { color: #f92672 } /* Operator.Word */
+.codehilite .w { color: #f8f8f2 } /* Text.Whitespace */
+.codehilite .mb { color: #ae81ff } /* Literal.Number.Bin */
+.codehilite .mf { color: #ae81ff } /* Literal.Number.Float */
+.codehilite .mh { color: #ae81ff } /* Literal.Number.Hex */
+.codehilite .mi { color: #ae81ff } /* Literal.Number.Integer */
+.codehilite .mo { color: #ae81ff } /* Literal.Number.Oct */
+.codehilite .sa { color: #e6db74 } /* Literal.String.Affix */
+.codehilite .sb { color: #e6db74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #e6db74 } /* Literal.String.Char */
+.codehilite .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #e6db74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #e6db74 } /* Literal.String.Double */
+.codehilite .se { color: #ae81ff } /* Literal.String.Escape */
+.codehilite .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #e6db74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #e6db74 } /* Literal.String.Other */
+.codehilite .sr { color: #e6db74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #e6db74 } /* Literal.String.Single */
+.codehilite .ss { color: #e6db74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #a6e22e } /* Name.Function.Magic */
+.codehilite .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.codehilite .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.codehilite .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.codehilite .il { color: #ae81ff } /* Literal.Number.Integer.Long */
+/* Admonitions */
+.admonition{margin:1.4em 0;border:1px solid #e0e3ec;border-left-width:5px;
+  background:#fafbfe;padding:0 16px 12px;}
+.admonition-title{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;font-size:13px;margin:0 -16px 8px;padding:9px 16px;
+  background:#eef1f8;color:var(--sas-navy);}
+.admonition.note{border-left-color:var(--sas-teal);}
+.admonition.note .admonition-title{background:#e4f0f2;color:var(--sas-teal);}
+.admonition.tip,.admonition.hint{border-left-color:#1f9d55;}
+.admonition.tip .admonition-title,.admonition.hint .admonition-title{background:#e4f4ea;color:#1f7a45;}
+.admonition.warning,.admonition.caution{border-left-color:var(--sas-gold);}
+.admonition.warning .admonition-title,.admonition.caution .admonition-title{background:#fdf3dc;color:#8a6400;}
+.admonition.danger,.admonition.error{border-left-color:var(--sas-crimson);}
+.admonition.danger .admonition-title,.admonition.error .admonition-title{background:#fbe4e7;color:var(--sas-crimson);}
+.admonition>p:last-child{margin-bottom:0;}
+details.admonition{padding-bottom:0;}
+details.admonition>.admonition-title{cursor:pointer;margin-bottom:0;}
+details[open].admonition>.admonition-title{margin-bottom:8px;}
+img{max-width:100%;height:auto;}
+/* Offline notice + nav */
+.offline-note{background:#fdf3dc;border:1px solid var(--sas-gold);border-left:5px solid var(--sas-gold);
+  padding:10px 16px;font-size:14px;margin:0 0 12px;color:#6b5108;}
+.dl-bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px;}
+.dl-btn{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;padding:9px 16px;border:1px solid var(--sas-navy);background:#fff;
+  color:var(--sas-navy);cursor:pointer;text-decoration:none;display:inline-block;line-height:1;}
+.dl-btn:hover{background:var(--sas-navy);color:#fff;border-bottom-color:var(--sas-navy);}
+.dl-btn.primary{background:var(--sas-crimson);border-color:var(--sas-crimson);color:#fff;}
+.dl-btn.primary:hover{background:#a30d26;border-color:#a30d26;}
+.pagenav{display:flex;justify-content:space-between;gap:12px;margin:36px 0 0;
+  border-top:2px solid #e3e6ef;padding-top:18px;flex-wrap:wrap;}
+.pagenav a{flex:1;min-width:160px;border:1px solid #d7dae6;padding:10px 14px;
+  text-decoration:none;border-bottom:1px solid #d7dae6;color:var(--sas-navy);
+  font-size:14px;background:#fff;}
+.pagenav a:hover{border-color:var(--sas-navy);}
+.pagenav .lbl{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;
+  color:#999;margin-bottom:2px;}
+.pagenav .next{text-align:right;}
+footer.sas{background:var(--sas-navy);color:#c7cde4;padding:16px 40px;
+  font-size:12px;letter-spacing:.04em;text-align:center;border-top:3px solid var(--sas-gold);}
+footer.sas b{color:var(--sas-gold);}
+@media(max-width:640px){.banner,.content,footer.sas{padding-left:20px;padding-right:20px;}}
+@media print{body{background:#fff;}.wrap{box-shadow:none;max-width:100%;}.copy-btn{display:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="banner">
+    <span class="sas-logo-box">SHANGHAI<br>AMERICAN<br>SCHOOL<span class="sas-logo-sub">PX</span></span>
+    <span class="course">Advanced Physical<br><b>Computing</b> · 2026&ndash;27</span>
+  </header>
+  <main class="content">
+    <div class="offline-note">Offline copy for download. The live version with search lives on the course GitHub site.</div>
+    <div class="dl-bar">
+      <button class="dl-btn primary" onclick="downloadThisLesson()">&#8681; Download this lesson</button>
+      <a class="dl-btn" href="APC-Semester1-Offline.zip" download>&#8681; Download whole course (.zip)</a>
+    </div>
+    <h1 id="lesson-02-arduino-meet-the-board-digital-io">Lesson 02 — Arduino: Meet the Board &amp; Digital I/O</h1>
+<blockquote>
+<p>Upload your first sketch to an Arduino, learn how a C++ sketch is structured, and make a button control an LED.</p>
+</blockquote>
+<p><strong>Platform:</strong> Arduino (Uno or class board), programmed from a Mac over USB
+<strong>Estimated time:</strong> ~120 min hands-on
+<strong>Prerequisites:</strong> <a href="lesson-01-foundations.html">Lesson 1</a> — breadboard wiring, LED + resistor, "power off before wiring"</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<ul>
+<li>Identify the key parts of the Arduino board: USB port, power, digital pins, GND, the onboard LED.</li>
+<li>Select the correct <strong>board</strong> and <strong>port</strong> in the Arduino IDE and upload a sketch.</li>
+<li>Explain the two-part structure of every sketch: <code>setup()</code> runs once, <code>loop()</code> runs forever.</li>
+<li>Use <code>pinMode</code>, <code>digitalWrite</code>, and <code>delay()</code> to control an output.</li>
+<li>Use <code>digitalRead</code> with <code>INPUT_PULLUP</code> to read a button, and use it to control an LED.</li>
+</ul>
+<h2 id="todays-plan-120-min">Today's plan (~120 min)</h2>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Part</th>
+<th>What you're doing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>~15 min</td>
+<td>A</td>
+<td>Meet the board + IDE tour, board &amp; port selection</td>
+</tr>
+<tr>
+<td>~25 min</td>
+<td>B</td>
+<td>Upload Blink; dissect <code>setup()</code> / <code>loop()</code></td>
+</tr>
+<tr>
+<td>~25 min</td>
+<td>C</td>
+<td>Your own LED on a breadboard pin</td>
+</tr>
+<tr>
+<td>~40 min</td>
+<td>D</td>
+<td><strong>Core build:</strong> button controls the LED</td>
+</tr>
+<tr>
+<td>~15 min</td>
+<td>—</td>
+<td>Check-out + extensions for fast finishers</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">The IDE is already installed</p>
+<p>Your Mac already has the Arduino IDE set up — don't reinstall it. If it's missing, tell your teacher rather than downloading it yourself.</p>
+</div>
+<h2 id="what-youll-need">What you'll need</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arduino board + USB cable</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>Breadboard</td>
+<td>1</td>
+<td>From Lesson 1</td>
+</tr>
+<tr>
+<td>LED (any colour)</td>
+<td>1</td>
+<td>Long leg = anode (+)</td>
+</tr>
+<tr>
+<td>Resistor, 220 Ω</td>
+<td>1</td>
+<td>For the LED</td>
+</tr>
+<tr>
+<td>Push button (tactile switch)</td>
+<td>1</td>
+<td>4-leg breadboard type</td>
+</tr>
+<tr>
+<td>Jumper wires</td>
+<td>4–6</td>
+<td>Male–male</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Software:</strong> Arduino IDE (on the Mac).</p>
+<hr />
+<h2 id="part-a-meet-the-board-the-ide-15-min">Part A — Meet the board &amp; the IDE (~15 min)</h2>
+<p>Find these on your board before plugging anything in:</p>
+<ul>
+<li><strong>USB port</strong> — power <em>and</em> programming come through here today.</li>
+<li><strong>Digital pins 0–13</strong> — each can be an input or an output. (Avoid 0 and 1 for now — they're shared with USB communication.)</li>
+<li><strong>GND pins</strong> — same job as the − rail in Lesson 1.</li>
+<li><strong>Onboard LED</strong> — marked <code>L</code>, wired internally to <strong>pin 13</strong>. It's how we'll test without wiring anything.</li>
+</ul>
+<p>Now plug the board in and open the IDE:</p>
+<ol>
+<li><strong>Tools → Board</strong> → select your board (e.g. <em>Arduino Uno</em>).</li>
+<li><strong>Tools → Port</strong> → select the port that mentions <code>usbmodem</code> or <code>usbserial</code>.</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">No port showing?</p>
+<p>Try a different USB cable first — many are charge-only and can't carry data. Then try another USB port on the Mac. Still nothing? Ask.</p>
+</div>
+<hr />
+<h2 id="part-b-blink-your-first-upload-25-min">Part B — Blink: your first upload (~25 min)</h2>
+<p>Every Arduino program (a <strong>sketch</strong>) has the same skeleton:</p>
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// runs ONCE, when the board powers on or resets</span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// runs FOREVER, top to bottom, over and over</span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>That's the biggest difference from Python so far: you don't run the program — you <strong>upload</strong> it, and the board runs it on a loop until you upload something else.</p>
+<p>Upload this — it blinks the onboard LED (pin 13):</p>
+<div class="codehilite"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">LED_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="p">;</span><span class="w">  </span><span class="c1">// onboard LED</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">LED_PIN</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span><span class="w">   </span><span class="c1">// declare the pin as an output</span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED_PIN</span><span class="p">,</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span><span class="w">  </span><span class="c1">// LED on</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span><span class="w">                   </span><span class="c1">// wait 500 ms</span>
+<span class="w">  </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED_PIN</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span><span class="w">   </span><span class="c1">// LED off</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>Click <strong>Upload</strong> (the → arrow). The board's TX/RX lights flicker during upload, then the <code>L</code> LED starts blinking.</p>
+<h3 id="checkpoint-b">✅ Checkpoint B</h3>
+<p>Change both <code>500</code>s to make it blink <strong>twice as fast</strong>, and upload again. If the blink speed changed, you own the upload workflow.</p>
+<div class="admonition tip">
+<p class="admonition-title">Compile vs. run</p>
+<p>Upload = compile the C++ → flash it onto the board. Errors appear in the black console at the bottom <em>before</em> anything reaches the board. Read the <strong>first</strong> error line — the rest is usually noise.</p>
+</div>
+<hr />
+<h2 id="part-c-your-own-led-on-a-breadboard-25-min">Part C — Your own LED on a breadboard (~25 min)</h2>
+<p>Now drive an external LED — same circuit as Lesson 1, but the Arduino pin replaces the power supply.</p>
+<h3 id="wiring">Wiring</h3>
+<p><strong>Power off first: unplug the USB cable before wiring.</strong></p>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arduino <strong>pin 8</strong></td>
+<td>220 Ω resistor → breadboard row</td>
+</tr>
+<tr>
+<td>Resistor's other end</td>
+<td>LED <strong>long leg (anode)</strong></td>
+</tr>
+<tr>
+<td>LED <strong>short leg (cathode)</strong></td>
+<td>Arduino <strong>GND</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Change one line in your Blink sketch:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">LED_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w">  </span><span class="c1">// was 13 — now your breadboard LED</span>
+</code></pre></div>
+
+<p>Re-plug USB, upload, and your LED on the breadboard blinks.</p>
+<div class="admonition warning">
+<p class="admonition-title">LED not blinking?</p>
+<p>Same checklist as Lesson 1: LED backwards, wrong row, or missing GND connection. Plus one new one: does the pin number in the sketch match the pin you actually wired?</p>
+</div>
+<hr />
+<h2 id="part-d-core-build-button-controls-the-led-40-min">Part D — Core build: button controls the LED (~40 min)</h2>
+<h3 id="the-wiring-trick-input_pullup">The wiring trick: <code>INPUT_PULLUP</code></h3>
+<p>A button just connects two points when pressed. To read it reliably the pin needs a defined voltage when the button <em>isn't</em> pressed — otherwise it floats and reads randomly. The Arduino has built-in <strong>pull-up resistors</strong> we can switch on from code, which means:</p>
+<ul>
+<li><strong>Pressed</strong> reads <code>LOW</code> — and <strong>not pressed</strong> reads <code>HIGH</code>. Backwards from what you'd guess. Remember it.</li>
+</ul>
+<h3 id="wiring_1">Wiring</h3>
+<p><strong>Unplug USB first.</strong> Keep the LED circuit from Part C.</p>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Button leg (one side)</td>
+<td>Arduino <strong>pin 2</strong></td>
+</tr>
+<tr>
+<td>Button leg (other side)</td>
+<td>Arduino <strong>GND</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Button legs come in pairs</p>
+<p>The 4-leg buttons connect in pairs along the <em>sides</em>. If your button seems always-pressed or never-pressed, rotate it 90°.</p>
+</div>
+<h3 id="the-sketch">The sketch</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">LED_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">BUTTON_PIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">LED_PIN</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">BUTTON_PIN</span><span class="p">,</span><span class="w"> </span><span class="n">INPUT_PULLUP</span><span class="p">);</span><span class="w">  </span><span class="c1">// built-in pull-up: no resistor needed</span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">digitalRead</span><span class="p">(</span><span class="n">BUTTON_PIN</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">LOW</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">          </span><span class="c1">// LOW = pressed (pull-up logic!)</span>
+<span class="w">    </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED_PIN</span><span class="p">,</span><span class="w"> </span><span class="n">HIGH</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED_PIN</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<h3 id="check-your-work">✅ Check your work</h3>
+<p><strong>Success looks like:</strong> LED off normally; LED on <strong>while</strong> the button is held; off again on release. Instant response, no flicker.</p>
+<div class="admonition warning">
+<p class="admonition-title">LED logic reversed?</p>
+<p>If the LED is on until you press: your <code>if</code> is checking <code>HIGH</code> instead of <code>LOW</code>. With a pull-up, <strong>pressed = LOW</strong>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Nothing happens at all?</p>
+<p>Check the button is straddling correctly (rotate it 90°), and that one leg really goes to GND. Then re-read the pin numbers in the sketch vs. your wiring.</p>
+</div>
+<hr />
+<h2 id="extension-challenge">Extension / challenge</h2>
+<p>Finished the core build? In order:</p>
+<ol>
+<li><strong>Toggle instead of hold</strong> — one press turns the LED on, the next press turns it off. (You'll need a variable that <em>remembers</em> the LED state, and to act only when the button <em>changes</em> from up to down.) You'll likely discover the LED sometimes flips twice per press — that's <strong>switch bounce</strong>, and it's the next challenge.</li>
+<li><strong>Debounce it</strong> — ignore changes that happen within ~50 ms of the last one. Compare your approach with <a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/button_toggle_debounced/button_toggle_debounced.ino"><code>button_toggle_debounced.ino</code></a> after you've tried.</li>
+<li><strong>LED pattern</strong> — wire 2–3 more LEDs (each with its own 220 Ω resistor, pins 9–11) and make a chase/Knight-Rider pattern. Starter in <a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/led_pattern/led_pattern.ino"><code>led_pattern.ino</code></a>.</li>
+</ol>
+<h2 id="code">Code</h2>
+<p>All sketches for this lesson live in <a href="https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-02"><code>code/lesson-02/</code></a>:</p>
+<ul>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/blink/blink.ino"><code>blink/blink.ino</code></a> — Parts B &amp; C</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/button_led/button_led.ino"><code>button_led/button_led.ino</code></a> — Part D core build</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/button_toggle_debounced/button_toggle_debounced.ino"><code>button_toggle_debounced/button_toggle_debounced.ino</code></a> — Extensions 1–2</li>
+<li><a href="https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/led_pattern/led_pattern.ino"><code>led_pattern/led_pattern.ino</code></a> — Extension 3</li>
+</ul>
+<p><strong>Next up:</strong> <a href="lesson-03-arduino-analog.html">Lesson 3 — Arduino: analog input, PWM &amp; serial</a></p>
+    <nav class="pagenav"><a class="prev" href="lesson-01-foundations.html"><span class="lbl">&larr; Previous</span>1. Foundations</a><a class="next" href="lesson-03-arduino-analog.html"><span class="lbl">Next &rarr;</span>3. Analog, PWM &amp; Serial</a></nav>
+  </main>
+  <footer class="sas">Shanghai American School &middot; Puxi High School &middot; <b>Advanced Physical Computing</b> &middot; Semester 1, 2026&ndash;27</footer>
+</div>
+<script>
+// Copy buttons (idempotent — safe if markup already contains one)
+document.querySelectorAll('pre').forEach(function(pre){
+  if(pre.querySelector('.copy-btn'))return;
+  var b=document.createElement('button');b.className='copy-btn';b.textContent='Copy';
+  b.addEventListener('click',function(){
+    var code=pre.querySelector('code')||pre;
+    navigator.clipboard.writeText(code.innerText).then(function(){b.textContent='Copied';
+      setTimeout(function(){b.textContent='Copy';},1500);});
+  });
+  pre.appendChild(b);
+});
+// Save this single self-contained page to the student's laptop
+function downloadThisLesson(){
+  var html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(location.pathname.split('/').pop()||'lesson.html');
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+}
+</script>
+</body>
+</html>
