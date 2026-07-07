@@ -55,4 +55,4 @@ Pin table + diagram image. Never bury pin mappings in prose.
 
 ## Code
 
-- Link to the exact file(s) in [`code/lesson-NN/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code/lesson-NN).
+- Link to the exact file(s) in [`code/lesson-NN/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-NN).

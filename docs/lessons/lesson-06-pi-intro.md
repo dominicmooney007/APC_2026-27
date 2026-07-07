@@ -102,13 +102,13 @@ Now put the course code on your Pi (this is Lesson 1's git skill, for real this 
 
 ```bash
 cd ~/apc
-git clone https://github.com/REPLACE-USERNAME/apc-2026-27.git
-ls apc-2026-27/code      # there's every lesson's code
+git clone https://github.com/dominicmooney007/APC_2026-27.git
+ls APC_2026-27/code      # there's every lesson's code
 ```
 
 ### ✅ Checkpoint C
 
-Run `python3 apc-2026-27/code/lesson-01/clone_check.py` — the Lesson 1 checkpoint file, now running *on the Pi*.
+Run `python3 APC_2026-27/code/lesson-01/clone_check.py` — the Lesson 1 checkpoint file, now running *on the Pi*.
 
 ---
 
@@ -146,10 +146,10 @@ You're done today when: you've completed both checkpoints, tried SSH once, and *
 ## Extension / challenge
 
 1. **Command detective** — find out what `df -h`, `uname -a`, and `vcgencmd measure_temp` tell you about your Pi.
-2. **Alias magic** — add `alias apc='cd ~/apc/apc-2026-27'` to your `~/.bashrc` and reload with `source ~/.bashrc`. Now typing `apc` teleports you to the course repo.
+2. **Alias magic** — add `alias apc='cd ~/apc/APC_2026-27'` to your `~/.bashrc` and reload with `source ~/.bashrc`. Now typing `apc` teleports you to the course repo.
 
 ## Code
 
-- [`code/lesson-06/terminal_scavenger_hunt.md`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-06/terminal_scavenger_hunt.md) — the Checkpoint B tasks + a command cheat-sheet to keep.
+- [`code/lesson-06/terminal_scavenger_hunt.md`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-06/terminal_scavenger_hunt.md) — the Checkpoint B tasks + a command cheat-sheet to keep.
 
 **Next up:** [Lesson 7 — Raspberry Pi: Python, Thonny & GPIO](lesson-07-pi-gpio.md)

@@ -44,16 +44,16 @@ How the course fits together:
 
 - **Schoology** = front door. Announcements, grades, deadlines, and a link to each lesson **in order**.
 - **This site** = the actual lessons. Copy-pasteable code, wiring tables, troubleshooting.
-- **The GitHub repo** = this site's source *plus* all code, foldered by lesson in [`code/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code).
+- **The GitHub repo** = this site's source *plus* all code, foldered by lesson in [`code/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code).
 
 ### Get the code — two ways
 
-**Option 1 — Download ZIP (no tools needed):** on the [repo page](https://github.com/REPLACE-USERNAME/apc-2026-27), click **Code → Download ZIP**, then unzip.
+**Option 1 — Download ZIP (no tools needed):** on the [repo page](https://github.com/dominicmooney007/APC_2026-27), click **Code → Download ZIP**, then unzip.
 
 **Option 2 — Clone with git (what you'll use on the Pi later):**
 
 ```bash
-git clone https://github.com/REPLACE-USERNAME/apc-2026-27.git
+git clone https://github.com/dominicmooney007/APC_2026-27.git
 ```
 
 ### ✅ Checkpoint A
@@ -166,7 +166,7 @@ Finished early? In order:
 
 ## Code
 
-- [`code/lesson-01/clone_check.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-01/clone_check.py) — the Checkpoint A file proving you got the repo.
-- [`code/lesson-01/resistor_calc.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-01/resistor_calc.py) — a little Ohm's-law calculator; a preview of the Python you'll run on the Pi from Lesson 7.
+- [`code/lesson-01/clone_check.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-01/clone_check.py) — the Checkpoint A file proving you got the repo.
+- [`code/lesson-01/resistor_calc.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-01/resistor_calc.py) — a little Ohm's-law calculator; a preview of the Python you'll run on the Pi from Lesson 7.
 
 **Next up:** [Lesson 2 — Arduino: meet the board & digital I/O](lesson-02-arduino-digital.md)

@@ -266,19 +266,19 @@ void loop() {
 ## Extension / challenge
 
 1. **Faster = closer** — make the beeps repeat faster as distance shrinks (map distance → gap between `tone()` calls). Now it's a real parking sensor.
-2. **Auto gate** — add the SG90 servo (signal → **pin 6**, red → 5V, brown → GND). First run [`servo_sweep/servo_sweep.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-04/servo_sweep/servo_sweep.ino) to see the `Servo` library move it to 0°/90°/180°. Then the build: when something stays closer than 30 cm, the "gate" opens (90°); when clear for 5 s it closes. Last year's class built exactly this — after you've tried, compare with [`auto_gate/auto_gate.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-04/auto_gate/auto_gate.ino), which shows a proper state machine.
+2. **Auto gate** — add the SG90 servo (signal → **pin 6**, red → 5V, brown → GND). First run [`servo_sweep/servo_sweep.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/servo_sweep/servo_sweep.ino) to see the `Servo` library move it to 0°/90°/180°. Then the build: when something stays closer than 30 cm, the "gate" opens (90°); when clear for 5 s it closes. Last year's class built exactly this — after you've tried, compare with [`auto_gate/auto_gate.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/auto_gate/auto_gate.ino), which shows a proper state machine.
 3. **Climate station** — swap the ultrasonic for the DHT22: LCD row 1 = temperature, row 2 = humidity.
-4. **L298N fan (demo station)** — DC motors drink more current than a pin can supply and kick back voltage spikes, so they get **external battery power** and a **driver board**. Try [`l298n_fan/l298n_fan.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-04/l298n_fan/l298n_fan.ino): speed via PWM on ENA (pin 5), direction via IN1/IN2 (pins 7/4).
+4. **L298N fan (demo station)** — DC motors drink more current than a pin can supply and kick back voltage spikes, so they get **external battery power** and a **driver board**. Try [`l298n_fan/l298n_fan.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/l298n_fan/l298n_fan.ino): speed via PWM on ENA (pin 5), direction via IN1/IN2 (pins 7/4).
 
 ## Code
 
-All sketches in [`code/lesson-04/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code/lesson-04):
+All sketches in [`code/lesson-04/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-04):
 
-- [`ultrasonic_read/ultrasonic_read.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-04/ultrasonic_read/ultrasonic_read.ino) — Part A
-- [`dht22_read/dht22_read.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-04/dht22_read/dht22_read.ino) — Part B
-- [`lcd_hello/lcd_hello.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-04/lcd_hello/lcd_hello.ino) — Part C
-- [`distance_display/distance_display.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-04/distance_display/distance_display.ino) — Part D core build
-- [`servo_sweep/servo_sweep.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-04/servo_sweep/servo_sweep.ino) + [`auto_gate/auto_gate.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-04/auto_gate/auto_gate.ino) — Extension 2
-- [`l298n_fan/l298n_fan.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-04/l298n_fan/l298n_fan.ino) — Extension 4 (demo)
+- [`ultrasonic_read/ultrasonic_read.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/ultrasonic_read/ultrasonic_read.ino) — Part A
+- [`dht22_read/dht22_read.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/dht22_read/dht22_read.ino) — Part B
+- [`lcd_hello/lcd_hello.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/lcd_hello/lcd_hello.ino) — Part C
+- [`distance_display/distance_display.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/distance_display/distance_display.ino) — Part D core build
+- [`servo_sweep/servo_sweep.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/servo_sweep/servo_sweep.ino) + [`auto_gate/auto_gate.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/auto_gate/auto_gate.ino) — Extension 2
+- [`l298n_fan/l298n_fan.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-04/l298n_fan/l298n_fan.ino) — Extension 4 (demo)
 
 **Next up:** [Lesson 5 — Arduino mini-project](lesson-05-arduino-project.md)

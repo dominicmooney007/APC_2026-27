@@ -124,14 +124,14 @@ You get a grid with a number like `76` — that device's address on the bus. Eve
 
 1. **Analog dimmer, Pi edition** — combine today's pot reading with Lesson 7's `PWMLED` on GPIO18: `led.value = pot.value`. One line connects the two halves of everything you've learned this week.
 2. **Two channels at once** — a second pot (borrow one) on CH1, print both. Eight channels is the MCP3008's whole point.
-3. **Plot it** — Thonny's Shell scrolls; matplotlib doesn't. `sudo apt install python3-matplotlib`, then adapt [`mcp3008_plot.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-08/mcp3008_plot.py) — a live-updating graph, and a preview of Lesson 9.
+3. **Plot it** — Thonny's Shell scrolls; matplotlib doesn't. `sudo apt install python3-matplotlib`, then adapt [`mcp3008_plot.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-08/mcp3008_plot.py) — a live-updating graph, and a preview of Lesson 9.
 
 ## Code
 
-All code in [`code/lesson-08/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code/lesson-08):
+All code in [`code/lesson-08/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-08):
 
-- [`mcp3008_read.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-08/mcp3008_read.py) — Part B core build
-- [`mcp3008_two_channels.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-08/mcp3008_two_channels.py) — Extension 2
-- [`mcp3008_plot.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-08/mcp3008_plot.py) — Extension 3
+- [`mcp3008_read.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-08/mcp3008_read.py) — Part B core build
+- [`mcp3008_two_channels.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-08/mcp3008_two_channels.py) — Extension 2
+- [`mcp3008_plot.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-08/mcp3008_plot.py) — Extension 3
 
 **Next up:** [Lesson 9 — Raspberry Pi mini-project](lesson-09-pi-project.md)

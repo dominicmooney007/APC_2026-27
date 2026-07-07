@@ -183,10 +183,10 @@ Make it yours: name, a shape, different colours — anything, as long as you've 
 
 ## Code
 
-All code in [`code/lesson-10/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code/lesson-10):
+All code in [`code/lesson-10/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-10):
 
-- [`first_light.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-10/first_light.py) — Part C
-- [`status_screen.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-10/status_screen.py) — Part D core build
+- [`first_light.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-10/first_light.py) — Part C
+- [`status_screen.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-10/status_screen.py) — Part D core build
 
 Driver and examples © PiSugar, [Apache-2.0](https://github.com/PiSugar/Whisplay/blob/main/LICENSE) — course snippets adapt their patterns with attribution.
 

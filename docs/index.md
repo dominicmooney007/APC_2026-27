@@ -29,7 +29,7 @@ Two ways, both fine:
 2. **Clone with git** — in a terminal:
 
 ```bash
-git clone https://github.com/REPLACE-USERNAME/apc-2026-27.git
+git clone https://github.com/dominicmooney007/APC_2026-27.git
 ```
 
 Lesson 1 walks you through both.

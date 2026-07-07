@@ -177,11 +177,11 @@ pause()
 
 ## Code
 
-All code in [`code/lesson-07/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code/lesson-07):
+All code in [`code/lesson-07/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-07):
 
-- [`blink.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-07/blink.py) — Part B
-- [`button_polling.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-07/button_polling.py) / [`button_callbacks.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-07/button_callbacks.py) — Part C
-- [`button_toggle.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-07/button_toggle.py) — Part D core build
-- [`pwm_dimmer.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-07/pwm_dimmer.py) — Extension 1 starter
+- [`blink.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-07/blink.py) — Part B
+- [`button_polling.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-07/button_polling.py) / [`button_callbacks.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-07/button_callbacks.py) — Part C
+- [`button_toggle.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-07/button_toggle.py) — Part D core build
+- [`pwm_dimmer.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-07/pwm_dimmer.py) — Extension 1 starter
 
 **Next up:** [Lesson 8 — Raspberry Pi: analog (ADC), I2C & SPI](lesson-08-pi-buses.md)

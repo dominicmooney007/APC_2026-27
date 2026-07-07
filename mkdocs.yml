@@ -1,8 +1,8 @@
 site_name: Advanced Physical Computing 2026–27
 site_description: Semester 1 — Arduino, Raspberry Pi 5 & Whisplay HAT
-site_url: https://REPLACE-USERNAME.github.io/apc-2026-27/
-repo_url: https://github.com/REPLACE-USERNAME/apc-2026-27
-repo_name: apc-2026-27
+site_url: https://dominicmooney007.github.io/APC_2026-27/
+repo_url: https://github.com/dominicmooney007/APC_2026-27
+repo_name: APC_2026-27
 
 theme:
   name: material

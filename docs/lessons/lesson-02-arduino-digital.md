@@ -191,16 +191,16 @@ void loop() {
 Finished the core build? In order:
 
 1. **Toggle instead of hold** — one press turns the LED on, the next press turns it off. (You'll need a variable that *remembers* the LED state, and to act only when the button *changes* from up to down.) You'll likely discover the LED sometimes flips twice per press — that's **switch bounce**, and it's the next challenge.
-2. **Debounce it** — ignore changes that happen within ~50 ms of the last one. Compare your approach with [`button_toggle_debounced.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-02/button_toggle_debounced/button_toggle_debounced.ino) after you've tried.
-3. **LED pattern** — wire 2–3 more LEDs (each with its own 220 Ω resistor, pins 9–11) and make a chase/Knight-Rider pattern. Starter in [`led_pattern.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-02/led_pattern/led_pattern.ino).
+2. **Debounce it** — ignore changes that happen within ~50 ms of the last one. Compare your approach with [`button_toggle_debounced.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/button_toggle_debounced/button_toggle_debounced.ino) after you've tried.
+3. **LED pattern** — wire 2–3 more LEDs (each with its own 220 Ω resistor, pins 9–11) and make a chase/Knight-Rider pattern. Starter in [`led_pattern.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/led_pattern/led_pattern.ino).
 
 ## Code
 
-All sketches for this lesson live in [`code/lesson-02/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code/lesson-02):
+All sketches for this lesson live in [`code/lesson-02/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-02):
 
-- [`blink/blink.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-02/blink/blink.ino) — Parts B & C
-- [`button_led/button_led.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-02/button_led/button_led.ino) — Part D core build
-- [`button_toggle_debounced/button_toggle_debounced.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-02/button_toggle_debounced/button_toggle_debounced.ino) — Extensions 1–2
-- [`led_pattern/led_pattern.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-02/led_pattern/led_pattern.ino) — Extension 3
+- [`blink/blink.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/blink/blink.ino) — Parts B & C
+- [`button_led/button_led.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/button_led/button_led.ino) — Part D core build
+- [`button_toggle_debounced/button_toggle_debounced.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/button_toggle_debounced/button_toggle_debounced.ino) — Extensions 1–2
+- [`led_pattern/led_pattern.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-02/led_pattern/led_pattern.ino) — Extension 3
 
 **Next up:** [Lesson 3 — Arduino: analog input, PWM & serial](lesson-03-arduino-analog.md)

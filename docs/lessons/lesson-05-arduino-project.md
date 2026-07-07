@@ -66,7 +66,7 @@ Finished early? Add a **second output mode** (e.g. the parking sensor gets a "ni
 
 ## Code
 
-- [`code/lesson-05/smart_fan_starter/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code/lesson-05/smart_fan_starter) — a deliberately *incomplete* starter for the smart fan showing the required structure (comment header, state via serial). Don't copy it — outdo it.
-- [`code/lesson-04/auto_gate/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code/lesson-04/auto_gate) — the auto-gate state machine, if that's your base.
+- [`code/lesson-05/smart_fan_starter/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-05/smart_fan_starter) — a deliberately *incomplete* starter for the smart fan showing the required structure (comment header, state via serial). Don't copy it — outdo it.
+- [`code/lesson-04/auto_gate/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-04/auto_gate) — the auto-gate state machine, if that's your base.
 
 **Next up:** [Lesson 6 — Raspberry Pi 5: Linux & remote access](lesson-06-pi-intro.md)

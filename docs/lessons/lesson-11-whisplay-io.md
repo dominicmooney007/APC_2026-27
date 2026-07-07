@@ -213,11 +213,11 @@ pause()
 
 ## Code
 
-All code in [`code/lesson-11/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code/lesson-11):
+All code in [`code/lesson-11/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-11):
 
-- [`rgb_led.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-11/rgb_led.py) — Part A
-- [`button_events.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-11/button_events.py) — Part B
-- [`voice_memo.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-11/voice_memo.py) — Part D core build
+- [`rgb_led.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-11/rgb_led.py) — Part A
+- [`button_events.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-11/button_events.py) — Part B
+- [`voice_memo.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-11/voice_memo.py) — Part D core build
 
 Driver © PiSugar, [Apache-2.0](https://github.com/PiSugar/Whisplay/blob/main/LICENSE).
 

@@ -159,16 +159,16 @@ void loop() {
 ## Extension / challenge
 
 1. **Reverse it** — knob up = LED *dimmer*. One argument change. Which one?
-2. **Theremin** — wire the passive buzzer (+ leg → pin 8, − leg → GND) and turn knob position into pitch: `tone(8, map(raw, 0, 1023, 200, 2000));`. Congratulations, you've built an instrument. Starter in [`pot_theremin.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-03/pot_theremin/pot_theremin.ino).
+2. **Theremin** — wire the passive buzzer (+ leg → pin 8, − leg → GND) and turn knob position into pitch: `tone(8, map(raw, 0, 1023, 200, 2000));`. Congratulations, you've built an instrument. Starter in [`pot_theremin.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-03/pot_theremin/pot_theremin.ino).
 3. **Fade patterns** — combine Part C and Part D: the knob sets the *speed* of the auto-fade instead of the brightness directly. Trickier than it sounds.
 
 ## Code
 
-All sketches in [`code/lesson-03/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code/lesson-03):
+All sketches in [`code/lesson-03/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-03):
 
-- [`pot_read/pot_read.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-03/pot_read/pot_read.ino) — Parts A & B
-- [`led_fade/led_fade.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-03/led_fade/led_fade.ino) — Part C
-- [`pot_brightness/pot_brightness.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-03/pot_brightness/pot_brightness.ino) — Part D core build
-- [`pot_theremin/pot_theremin.ino`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-03/pot_theremin/pot_theremin.ino) — Extension 2
+- [`pot_read/pot_read.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-03/pot_read/pot_read.ino) — Parts A & B
+- [`led_fade/led_fade.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-03/led_fade/led_fade.ino) — Part C
+- [`pot_brightness/pot_brightness.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-03/pot_brightness/pot_brightness.ino) — Part D core build
+- [`pot_theremin/pot_theremin.ino`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-03/pot_theremin/pot_theremin.ino) — Extension 2
 
 **Next up:** [Lesson 4 — Arduino: sensors & actuators](lesson-04-arduino-sensors.md)

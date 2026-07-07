@@ -217,11 +217,11 @@ Walk past the sensor while watching your phone: the page flips red with the time
 
 ## Code
 
-All code in [`code/lesson-09/`](https://github.com/REPLACE-USERNAME/apc-2026-27/tree/main/code/lesson-09):
+All code in [`code/lesson-09/`](https://github.com/dominicmooney007/APC_2026-27/tree/main/code/lesson-09):
 
-- [`security_logger.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-09/security_logger.py) — Layer 1
-- [`plot_activity.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-09/plot_activity.py) — Layer 2
-- [`security_web.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-09/security_web.py) — Layer 3
-- [`security_web_armable.py`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-09/security_web_armable.py) — Extension 1
+- [`security_logger.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-09/security_logger.py) — Layer 1
+- [`plot_activity.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-09/plot_activity.py) — Layer 2
+- [`security_web.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-09/security_web.py) — Layer 3
+- [`security_web_armable.py`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-09/security_web_armable.py) — Extension 1
 
 **Next up:** [Lesson 10 — Meet the Whisplay HAT](lesson-10-whisplay-intro.md)

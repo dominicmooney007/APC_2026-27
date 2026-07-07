@@ -56,4 +56,4 @@ That's Semester 1: from a bare LED on a breadboard to a self-scoped device on th
 
 ## Code
 
-- [`code/lesson-14/reflection-template.md`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-14/reflection-template.md) — the five questions, ready to copy.
+- [`code/lesson-14/reflection-template.md`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-14/reflection-template.md) — the five questions, ready to copy.

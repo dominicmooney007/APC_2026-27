@@ -80,6 +80,6 @@ Finished with time to spare? **High-score persistence** (write to a file, surviv
 ## Code
 
 - Your base: `Whisplay/example/flappy_bird.py` or `jump_game.py` — © PiSugar, [Apache-2.0](https://github.com/PiSugar/Whisplay/blob/main/LICENSE). Keep the attribution comment at the top of your modified file.
-- [`code/lesson-12/CHANGES-template.md`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-12/CHANGES-template.md) — the required change log format.
+- [`code/lesson-12/CHANGES-template.md`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-12/CHANGES-template.md) — the required change log format.
 
 **Next up:** [Lesson 13 — Mini-capstone: proposal & build](lesson-13-capstone-build.md)

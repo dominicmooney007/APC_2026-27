@@ -48,7 +48,7 @@ Whatever state you're in, **note your next three tasks** in the README before pa
 
 ## Code
 
-- [`code/lesson-13/proposal-template.md`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-13/proposal-template.md) — copy into your project folder and fill in.
-- [`code/lesson-13/project-README-template.md`](https://github.com/REPLACE-USERNAME/apc-2026-27/blob/main/code/lesson-13/project-README-template.md) — the documentation skeleton.
+- [`code/lesson-13/proposal-template.md`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-13/proposal-template.md) — copy into your project folder and fill in.
+- [`code/lesson-13/project-README-template.md`](https://github.com/dominicmooney007/APC_2026-27/blob/main/code/lesson-13/project-README-template.md) — the documentation skeleton.
 
 **Next up:** [Lesson 14 — Mini-capstone: demo day & reflection](lesson-14-capstone-demo.md)
